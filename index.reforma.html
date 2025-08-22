@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infográfico: A Reforma Tributária no Brasil</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 4px solid #366E8A;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-[#E6F2F7]">
+    <!-- Palette: Brilliant Blues -->
+    <!-- Plan: The infographic follows a narrative structure: 1. Hook/Intro, 2. The Core Change (5 taxes to 2), 3. Defining the New Taxes, 4. Sector Impact Analysis, 5. Business Implications, 6. Gemini-powered Impact Simulator, 7. Transition Timeline, 8. Call to Action. -->
+    <!-- Visualizations: 
+         - Tax Unification: Goal=Organize, Viz=Flow Chart (HTML/CSS), Justification=Clearly shows the before/after state without SVG.
+         - Sector Impact: Goal=Compare, Viz=Bar Chart (Chart.js/Canvas), Justification=Effectively compares potential impacts across categories.
+         - Business Implications: Goal=Inform, Viz=Icon List (Unicode/HTML/CSS), Justification=Simple pictograph style for quick comprehension.
+         - Transition Timeline: Goal=Change, Viz=Timeline (HTML/CSS), Justification=Visualizes chronological events effectively without SVG.
+         - NEITHER Mermaid JS NOR SVG were used in this output. -->
+
+    <div class="container mx-auto p-4 md:p-8 max-w-5xl">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#003F5C] mb-2">A Reforma Tributária Chegou</h1>
+            <p class="text-xl md:text-2xl text-[#366E8A]">Sua empresa está preparada para a maior mudança nos impostos das últimas décadas?</p>
+        </header>
+
+        <main>
+            <section id="unification" class="mb-16">
+                <div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+                    <h2 class="text-2xl md:text-3xl font-bold text-[#003F5C] text-center mb-2">O Fim da Complexidade: De 5 Impostos para 2</h2>
+                    <p class="text-center text-gray-600 mb-8 max-w-3xl mx-auto">O principal objetivo da reforma é simplificar o sistema tributário brasileiro, unificando cinco tributos sobre o consumo em um modelo de Imposto sobre Valor Agregado (IVA) dual, composto pelo IBS e pela CBS.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <div class="text-center">
+                            <h3 class="text-xl font-semibold text-[#003F5C] mb-4">ANTES</h3>
+                            <div class="flex flex-wrap justify-center items-center gap-4">
+                                <div class="bg-[#A8CAD6] text-[#003F5C] font-bold py-3 px-5 rounded-lg shadow">PIS</div>
+                                <div class="bg-[#A8CAD6] text-[#003F5C] font-bold py-3 px-5 rounded-lg shadow">COFINS</div>
+                                <div class="bg-[#A8CAD6] text-[#003F5C] font-bold py-3 px-5 rounded-lg shadow">IPI</div>
+                                <div class="bg-[#A8CAD6] text-[#003F5C] font-bold py-3 px-5 rounded-lg shadow">ICMS</div>
+                                <div class="bg-[#A8CAD6] text-[#003F5C] font-bold py-3 px-5 rounded-lg shadow">ISS</div>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <h3 class="text-xl font-semibold text-[#003F5C] mb-4">DEPOIS</h3>
+                            <div class="space-y-4">
+                                <div class="bg-[#366E8A] text-white font-bold py-4 px-6 rounded-lg shadow-md">
+                                    <p>CBS (Contribuição sobre Bens e Serviços)</p>
+                                    <p class="text-sm font-normal">(Federal)</p>
+                                </div>
+                                <div class="bg-[#6B9DB3] text-white font-bold py-4 px-6 rounded-lg shadow-md">
+                                    <p>IBS (Imposto sobre Bens e Serviços)</p>
+                                    <p class="text-sm font-normal">(Estadual e Municipal)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="impact-sectors" class="mb-16">
+                 <div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+                    <h2 class="text-2xl md:text-3xl font-bold text-[#003F5C] text-center mb-2">Impacto Potencial por Setor</h2>
+                    <p class="text-center text-gray-600 mb-8 max-w-3xl mx-auto">A mudança na tributação afetará os setores de maneiras diferentes. O modelo IVA tende a beneficiar a indústria, que acumula créditos, enquanto o setor de serviços, com menos insumos, pode sentir um aumento na carga tributária efetiva. Os dados abaixo são ilustrativos.</p>
+                    <div class="chart-container">
+                        <canvas id="sectorImpactChart"></canvas>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="business-implications" class="mb-16">
+                 <div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+                    <h2 class="text-2xl md:text-3xl font-bold text-[#003F5C] text-center mb-2">O Que Muda Para o Seu Negócio?</h2>
+                    <p class="text-center text-gray-600 mb-8 max-w-3xl mx-auto">A reforma vai além da simples troca de impostos. Ela impactará diretamente a gestão, a precificação e a competitividade da sua empresa.</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                        <div class="bg-[#E6F2F7] p-6 rounded-lg text-center">
+                            <span class="text-4xl">✅</span>
+                            <h3 class="text-lg font-bold text-[#003F5C] mt-2 mb-1">Simplificação e Redução da Burocracia</h3>
+                            <p class="text-gray-700 text-sm">Menos obrigações acessórias e um sistema de apuração mais claro diminuem os custos operacionais e o tempo gasto com burocracia.</p>
+                        </div>
+                        <div class="bg-[#E6F2F7] p-6 rounded-lg text-center">
+                            <span class="text-4xl">🔍</span>
+                            <h3 class="text-lg font-bold text-[#003F5C] mt-2 mb-1">Transparência nos Preços</h3>
+                            <p class="text-gray-700 text-sm">O "imposto por fora" deixará claro para o consumidor o valor real do tributo em cada produto ou serviço, aumentando a transparência.</p>
+                        </div>
+                        <div class="bg-[#E6F2F7] p-6 rounded-lg text-center">
+                            <span class="text-4xl">🗓️</span>
+                            <h3 class="text-lg font-bold text-[#003F5C] mt-2 mb-1">Necessidade de Planejamento</h3>
+                            <p class="text-gray-700 text-sm">É crucial revisar a estrutura de custos, a precificação e a estratégia fiscal para se adaptar ao novo cenário e garantir a competitividade.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="gemini-simulator" class="mb-16">
+                <div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+                    <h2 class="text-2xl md:text-3xl font-bold text-[#003F5C] text-center mb-2">✨ Simule o Impacto na Sua Empresa</h2>
+                    <p class="text-center text-gray-600 mb-8 max-w-3xl mx-auto">Receba uma análise preliminar gerada por IA sobre os possíveis efeitos da Reforma Tributária para o seu negócio. Preencha os campos abaixo.</p>
+                    
+                    <div class="max-w-xl mx-auto">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label for="sector" class="block text-sm font-medium text-gray-700">Seu Setor</label>
+                                <select id="sector" name="sector" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-[#366E8A] focus:border-[#366E8A] sm:text-sm rounded-md">
+                                    <option>Serviços</option>
+                                    <option>Comércio</option>
+                                    <option>Indústria</option>
+                                    <option>Agronegócio</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="revenue" class="block text-sm font-medium text-gray-700">Faturamento Anual (R$)</label>
+                                <input type="number" name="revenue" id="revenue" class="mt-1 focus:ring-[#366E8A] focus:border-[#366E8A] block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="Ex: 500000">
+                            </div>
+                        </div>
+                        <button id="generateAnalysis" class="w-full flex justify-center items-center bg-[#003F5C] text-white font-bold py-3 px-8 rounded-full hover:bg-[#366E8A] transition duration-300 shadow-md">
+                            Gerar Análise Personalizada
+                        </button>
+                    </div>
+
+                    <div id="analysisResult" class="mt-8 max-w-xl mx-auto hidden">
+                        <div id="loader" class="loader mx-auto"></div>
+                        <div id="resultContent"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="timeline" class="mb-16">
+                <h2 class="text-2xl md:text-3xl font-bold text-[#003F5C] text-center mb-8">Uma Longa Jornada: A Linha do Tempo da Transição</h2>
+                <div class="relative">
+                    <div class="border-l-4 border-[#6B9DB3] absolute h-full top-0 left-1/2 -ml-[2px]"></div>
+                    <div class="mb-8 flex justify-between items-center w-full">
+                        <div class="order-1 w-5/12"></div>
+                        <div class="z-20 flex items-center order-1 bg-[#003F5C] shadow-xl w-12 h-12 rounded-full">
+                            <h1 class="mx-auto font-semibold text-lg text-white">2026</h1>
+                        </div>
+                        <div class="order-1 bg-white rounded-lg shadow-xl w-5/12 px-6 py-4">
+                            <h3 class="font-bold text-[#366E8A] text-lg">Início da Transição</h3>
+                            <p class="text-sm leading-snug tracking-wide text-gray-700">Começa a fase de teste com a cobrança de 0,9% para a CBS e 0,1% para o IBS.</p>
+                        </div>
+                    </div>
+                    <div class="mb-8 flex justify-between flex-row-reverse items-center w-full">
+                        <div class="order-1 w-5/12"></div>
+                        <div class="z-20 flex items-center order-1 bg-[#003F5C] shadow-xl w-12 h-12 rounded-full">
+                            <h1 class="mx-auto text-white font-semibold text-lg">2027</h1>
+                        </div>
+                        <div class="order-1 bg-white rounded-lg shadow-xl w-5/12 px-6 py-4">
+                            <h3 class="font-bold text-[#366E8A] text-lg">CBS em Vigor</h3>
+                            <p class="text-sm leading-snug tracking-wide text-gray-700">PIS e COFINS são extintos. A CBS entra em vigor plenamente.</p>
+                        </div>
+                    </div>
+                    <div class="mb-8 flex justify-between items-center w-full">
+                        <div class="order-1 w-5/12"></div>
+                        <div class="z-20 flex items-center order-1 bg-[#003F5C] shadow-xl w-12 h-12 rounded-full">
+                            <h1 class="mx-auto font-semibold text-lg text-white">2029</h1>
+                        </div>
+                        <div class="order-1 bg-white rounded-lg shadow-xl w-5/12 px-6 py-4">
+                            <h3 class="font-bold text-[#366E8A] text-lg">Transição do IBS</h3>
+                            <p class="text-sm leading-snug tracking-wide text-gray-700">Começa a unificação do ICMS e ISS, com a introdução gradual do IBS e a redução dos impostos antigos.</p>
+                        </div>
+                    </div>
+                    <div class="mb-8 flex justify-between flex-row-reverse items-center w-full">
+                        <div class="order-1 w-5/12"></div>
+                        <div class="z-20 flex items-center order-1 bg-[#003F5C] shadow-xl w-12 h-12 rounded-full">
+                            <h1 class="mx-auto text-white font-semibold text-lg">2033</h1>
+                        </div>
+                        <div class="order-1 bg-white rounded-lg shadow-xl w-5/12 px-6 py-4">
+                            <h3 class="font-bold text-[#366E8A] text-lg">Novo Sistema Completo</h3>
+                            <p class="text-sm leading-snug tracking-wide text-gray-700">Extinção total dos impostos antigos. O novo sistema tributário (IBS e CBS) passa a vigorar integralmente.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="cta" class="text-center">
+                <div class="bg-[#003F5C] text-white rounded-lg shadow-lg p-8 md:p-12">
+                    <h2 class="text-3xl font-bold mb-4">Não espere a mudança te pegar de surpresa.</h2>
+                    <p class="text-[#A8CAD6] mb-6 max-w-2xl mx-auto">A preparação começa agora. Um planejamento tributário estratégico é o que vai garantir a saúde financeira e a competitividade da sua empresa no novo cenário fiscal do Brasil.</p>
+                    <a href="https://web.whatsapp.com/send?phone=5521997999043&text=Olá%20gostaria%20de%20saber%20mais%20sobre%20os%20serviços%20da%20Padula%20Contabilidade." target="_blank" class="inline-block bg-white text-[#003F5C] font-bold py-3 px-8 rounded-full hover:bg-[#E6F2F7] transition duration-300 shadow-md">Fale com um especialista</a>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            function wrapLabel(label) {
+                const maxLength = 16;
+                if (label.length <= maxLength) {
+                    return label;
+                }
+                const words = label.split(' ');
+                const lines = [];
+                let currentLine = '';
+                for (const word of words) {
+                    if ((currentLine + ' ' + word).trim().length > maxLength) {
+                        lines.push(currentLine.trim());
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                }
+                if (currentLine) {
+                    lines.push(currentLine.trim());
+                }
+                return lines;
+            }
+
+            const ctx = document.getElementById('sectorImpactChart').getContext('2d');
+            const sectorImpactChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Serviços', 'Agronegócio', 'Comércio', 'Indústria'].map(wrapLabel),
+                    datasets: [{
+                        label: 'Variação Potencial da Carga Tributária',
+                        data: [15, 5, -5, -10],
+                        backgroundColor: ['#A8CAD6', '#6B9DB3', '#366E8A', '#003F5C'],
+                        borderColor: ['#A8CAD6', '#6B9DB3', '#366E8A', '#003F5C'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Variação Percentual (%)' }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    return Array.isArray(label) ? label.join(' ') : label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const generateButton = document.getElementById('generateAnalysis');
+            const analysisResultDiv = document.getElementById('analysisResult');
+            const loader = document.getElementById('loader');
+            const resultContent = document.getElementById('resultContent');
+
+            generateButton.addEventListener('click', async () => {
+                const sector = document.getElementById('sector').value;
+                const revenue = document.getElementById('revenue').value;
+
+                if (!revenue) {
+                    alert('Por favor, informe o faturamento anual.');
+                    return;
+                }
+
+                analysisResultDiv.classList.remove('hidden');
+                loader.classList.remove('hidden');
+                resultContent.innerHTML = '';
+
+                const prompt = `Aja como um consultor tributário brasileiro. Forneça uma análise preliminar e simplificada sobre o impacto da Reforma Tributária para uma empresa com as seguintes características:
+                - Setor de Atuação: ${sector}
+                - Faturamento Anual: R$ ${revenue}
+                
+                A análise deve ser curta, em linguagem clara e direta para um leigo. Foque nos pontos mais prováveis. Não use jargões complexos. Retorne a resposta em formato JSON.`;
+
+                try {
+                    const analysis = await callGemini(prompt);
+                    displayAnalysis(analysis);
+                } catch (error) {
+                    console.error('Error calling Gemini API:', error);
+                    resultContent.innerHTML = `<p class="text-red-600 text-center">Desculpe, não foi possível gerar a análise no momento. Tente novamente mais tarde.</p>`;
+                } finally {
+                    loader.classList.add('hidden');
+                }
+            });
+
+            async function callGemini(prompt) {
+                const apiKey = ""; 
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+                const payload = {
+                    contents: [{ parts: [{ text: prompt }] }],
+                    generationConfig: {
+                        responseMimeType: "application/json",
+                        responseSchema: {
+                            type: "OBJECT",
+                            properties: {
+                                "pontos_positivos": {
+                                    "type": "ARRAY",
+                                    "items": { "type": "STRING", "description": "Um ponto positivo provável." }
+                                },
+                                "pontos_atencao": {
+                                    "type": "ARRAY",
+                                    "items": { "type": "STRING", "description": "Um ponto de atenção provável." }
+                                },
+                                "recomendacao": {
+                                    "type": "STRING",
+                                    "description": "Uma recomendação prática e curta."
+                                }
+                            },
+                            required: ["pontos_positivos", "pontos_atencao", "recomendacao"]
+                        }
+                    }
+                };
+
+                let response;
+                let attempts = 0;
+                const maxAttempts = 5;
+                let delay = 1000;
+
+                while (attempts < maxAttempts) {
+                    try {
+                        response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+
+                        if (response.ok) {
+                            const result = await response.json();
+                            if (result.candidates && result.candidates.length > 0 && result.candidates[0].content.parts.length > 0) {
+                                return JSON.parse(result.candidates[0].content.parts[0].text);
+                            } else {
+                                throw new Error("Resposta da API inválida ou vazia.");
+                            }
+                        } else if (response.status === 429 || response.status >= 500) {
+                            // Throttling or server error, retry with backoff
+                            attempts++;
+                            if (attempts >= maxAttempts) {
+                                throw new Error(`Falha na API após ${maxAttempts} tentativas. Status: ${response.status}`);
+                            }
+                            await new Promise(resolve => setTimeout(resolve, delay));
+                            delay *= 2;
+                        } else {
+                            // Other client-side error, don't retry
+                            throw new Error(`Erro na API: ${response.status} ${response.statusText}`);
+                        }
+                    } catch (error) {
+                        attempts++;
+                        if (attempts >= maxAttempts) {
+                            throw error;
+                        }
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                        delay *= 2;
+                    }
+                }
+                throw new Error("Não foi possível obter uma resposta da API.");
+            }
+
+            function displayAnalysis(analysis) {
+                let html = `<div class="space-y-6 animate-fade-in">`;
+
+                if (analysis.pontos_positivos && analysis.pontos_positivos.length > 0) {
+                    html += `<div><h3 class="text-lg font-semibold text-green-700 mb-2">✅ Pontos Positivos</h3><ul class="list-disc list-inside space-y-1 text-gray-700">`;
+                    analysis.pontos_positivos.forEach(point => {
+                        html += `<li>${point}</li>`;
+                    });
+                    html += `</ul></div>`;
+                }
+
+                if (analysis.pontos_atencao && analysis.pontos_atencao.length > 0) {
+                    html += `<div><h3 class="text-lg font-semibold text-orange-700 mb-2">⚠️ Pontos de Atenção</h3><ul class="list-disc list-inside space-y-1 text-gray-700">`;
+                    analysis.pontos_atencao.forEach(point => {
+                        html += `<li>${point}</li>`;
+                    });
+                    html += `</ul></div>`;
+                }
+
+                if (analysis.recomendacao) {
+                    html += `<div><h3 class="text-lg font-semibold text-[#003F5C] mb-2">💡 Recomendação</h3><p class="text-gray-700 bg-blue-50 p-3 rounded-lg">${analysis.recomendacao}</p></div>`;
+                }
+
+                html += `<p class="text-xs text-gray-500 text-center pt-4">Atenção: Esta é uma análise preliminar e simplificada gerada por IA. Para um planejamento detalhado, consulte um especialista.</p>`;
+                html += `</div>`;
+                resultContent.innerHTML = html;
+            }
+        });
+    </script>
+</body>
+</html>
