@@ -5,10 +5,10 @@ Website responsivo para serviços contábeis com design moderno e funcionalidade
 ## Arquivos
 
 - `index.html` - Estrutura HTML principal
-- `styles.css` - Estilos CSS responsivos
-- `script.js` - Funcionalidades JavaScript
-- `logo-header.png` - Logo do cabeçalho
-- `imagem-fundo-section.png` - Imagem de fundo da seção hero
+- `styles.css` - Estilos CSS responsivos já integrado ao html principal.
+- `script.js` - Funcionalidades JavaScript já integrado ao html principal.
+- `logo-header.png` - Logo do cabeçalho inserido via link externo.
+- `imagem-fundo-section.png` - Imagem de fundo da seção hero inserido externamente hospedado na postimages.org.
 
 ## Como executar
 
@@ -27,6 +27,7 @@ Website responsivo para serviços contábeis com design moderno e funcionalidade
 - Scroll suave entre seções
 - Efeitos hover e animações
 - Design totalmente responsivo
+- integração de iA
 
 ## Tecnologias
 
