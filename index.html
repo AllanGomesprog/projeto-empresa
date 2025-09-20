@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Padula Contabilidade |</title>
+    <title>Padula Contabilidade | Contabilidade Inteligente</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="css/inicio.css">
-</head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    </head>
 <style>
   :root {
     --primary-container: #3A5A99;
@@ -53,12 +52,6 @@ body {
     padding: 0 1.5rem;
 }
 
-/* Força botão outlined a sempre ter texto azul */
-.header .btn-outlined {
-    color: var(--primary-container) !important;
-    border-color: var(--primary-container) !important;
-}
-
 /* Header fixo */
 .header {
     position: fixed;
@@ -67,15 +60,9 @@ body {
     width: 100%;
     height: var(--header-height);
     z-index: 1000;
-    background: white; /* sempre branco */
+    background: white;
     transition: box-shadow 0.4s ease;
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-}
-
-.header nav {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
 }
 
 .header .container {
@@ -86,7 +73,8 @@ body {
 }
 
 .header .logo img {
-    height: 100px;
+    /* MELHORIA: Ajustado para se encaixar melhor na altura do header */
+    height: 60px; 
     transition: all 0.3s ease;
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
@@ -94,6 +82,12 @@ body {
 .header .logo img:hover {
     transform: scale(1.05);
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+}
+
+.header nav {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
 }
 
 /* Botões base */
@@ -104,9 +98,9 @@ body {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 10px 20px;
+    padding: 8px 16px;
     font-weight: 500;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     border-radius: var(--border-radius-full);
     text-decoration: none;
     transition: all 0.3s ease;
@@ -115,7 +109,6 @@ body {
     cursor: pointer;
 }
 
-/* Botão azul preenchido */
 .btn-filled {
     background-color: var(--primary-container);
     color: var(--on-primary-container);
@@ -129,15 +122,14 @@ body {
 
 .btn-outlined {
     background-color: transparent;
-    color: var(--primary-container); /* deixa o texto azul */
-    border-color: var(--primary-container); /* deixa a borda azul */
+    color: var(--primary-container);
+    border-color: var(--primary-container);
 }
 .btn-outlined:hover {
-    background-color: var(--primary-fixed); /* azul claro no hover */
+    background-color: var(--primary-fixed);
     transform: translateY(-2px);
 }
 
-/* Botão tonal */
 .btn-tonal {
     background-color: var(--primary-fixed);
     color: var(--on-primary-fixed);
@@ -153,7 +145,6 @@ body {
     font-size: 1rem;
 }
 
-/* Efeito ripple */
 .ripple {
     position: absolute;
     border-radius: 50%;
@@ -161,12 +152,8 @@ body {
     animation: ripple-effect 0.6s linear;
     background-color: rgba(255, 255, 255, 0.7);
 }
-
 @keyframes ripple-effect {
-    to {
-        transform: scale(4);
-        opacity: 0;
-    }
+    to { transform: scale(4); opacity: 0; }
 }
 
 /* Hero Section */
@@ -182,30 +169,21 @@ body {
 
 .hero-slideshow {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
     z-index: 1;
 }
-
 .slide {
     position: absolute;
-    width: 100%;
-    height: 100%;
+    width: 100%; height: 100%;
     opacity: 0;
     transition: opacity 1s ease-in-out;
     background-size: cover;
     background-position: center;
 }
 .slide.active { opacity: 1; }
-
-.slide-1 {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://i.postimg.cc/NfzYw2qz/imagem-fundo-section-3.png');
-}
-.slide-2 {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://i.postimg.cc/02L3fYqP/imagem-fundo-section.png');
-}
+.slide-1 { background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://i.postimg.cc/NfzYw2qz/imagem-fundo-section-3.png'); }
+.slide-2 { background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://i.postimg.cc/02L3fYqP/imagem-fundo-section.png'); }
 
 .hero-content {
     position: relative;
@@ -218,7 +196,7 @@ body {
 
 .hero h1 {
     color: white;
-    font-size: 2.8rem;
+    font-size: 2.2rem;
     line-height: 1.2;
     margin-bottom: 1.5rem;
     font-weight: 700;
@@ -226,7 +204,7 @@ body {
 }
 .hero p {
     color: white;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     margin-bottom: 2.5rem;
     max-width: 650px;
     margin-left: auto;
@@ -234,25 +212,22 @@ body {
 }
 
 /* Seções */
+.section { padding: 5rem 0; }
 .section-title {
     text-align: center;
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: 700;
-    margin-bottom: 4rem;
+    margin-bottom: 3rem;
     color: var(--on-surface);
     letter-spacing: -0.5px;
 }
 
-.section { padding: 7rem 0; }
-
 .services { background-color: var(--surface); }
-
 .services-grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: 1.5rem;
 }
-
 .service-card {
     background-color: var(--surface-container);
     padding: 2rem;
@@ -266,7 +241,6 @@ body {
     box-shadow: var(--shadow-2);
     transform: translateY(-5px);
 }
-
 .service-icon {
     font-size: 1.8rem;
     width: 60px;
@@ -288,10 +262,10 @@ body {
     border-radius: var(--border-radius-large);
     max-width: 900px;
     margin: 0 auto;
-    padding: 4rem 2.5rem;
+    padding: 2.5rem 1.5rem;
     border: 1px solid var(--outline);
 }
-.tax-reform h2 { font-size: 2.2rem; color: var(--on-surface); margin-bottom: 1rem; }
+.tax-reform h2 { font-size: 1.8rem; color: var(--on-surface); margin-bottom: 1rem; }
 .tax-reform p {
     color: var(--text-muted);
     margin-bottom: 2rem;
@@ -301,14 +275,14 @@ body {
 }
 
 .cta {
-    padding: 7rem 1.5rem;
-    background-color: var(--secondary-container);
+    padding: 5rem 1.5rem;
+    background-color: var(--primary-container);
     text-align: center;
-    margin-top: 7rem;
+    margin-top: 5rem;
 }
 .cta-content { max-width: 700px; margin: 0 auto; }
-.cta h2 { font-size: 2.5rem; margin-bottom: 1rem; }
-.cta p { margin-bottom: 2rem; color: var(--on-secondary-container); }
+.cta h2 { font-size: 2rem; margin-bottom: 1rem; color: white; }
+.cta p { margin-bottom: 2rem; color: #e2e8f0; }
 
 /* Footer */
 .footer {
@@ -321,7 +295,7 @@ body {
     align-items: center;
     gap: 2rem;
 }
-.footer-logo img { height: 100px; opacity: 0.8; }
+.footer-logo img { height: 60px; opacity: 0.8; }
 .footer-info p {
     color: var(--text-muted);
     margin: 0.1rem 0;
@@ -353,6 +327,10 @@ body {
 .fade-in { opacity:0; animation: fadeIn 1s ease-out forwards; }
 .fade-in-delay-1 { opacity:0; animation: fadeIn 1s 0.2s ease-out forwards; }
 .fade-in-delay-2 { opacity:0; animation: fadeIn 1s 0.4s ease-out forwards; }
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
 .animate-on-scroll {
     opacity: 0;
@@ -363,57 +341,20 @@ body {
     opacity: 1;
     transform: translateY(0);
 }
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
 
-/* Responsividade */
-@media (max-width: 767px) {
-    .hero h1 { font-size: 2.2rem; }
-    .hero p { font-size: 1.1rem; }
-    .section { padding: 5rem 0; }
-    .section-title { font-size: 2rem; margin-bottom: 3rem; }
-    .header nav { gap: 0.6rem; }
-    .btn { padding: 8px 16px; font-size: 0.85rem; }
-    .services-grid { grid-template-columns: 1fr; }
-    .tax-reform { padding: 2.5rem 1.5rem; }
-    .tax-reform h2 { font-size: 1.8rem; }
-    .cta { padding: 5rem 1.5rem; margin-top: 5rem; }
-    .cta h2 { font-size: 2rem; }
-}
-@media (max-width: 480px) {
-    .header nav { gap: 0.5rem; }
-    .btn { padding: 7px 14px; font-size: 0.8rem; }
-    .hero h1 { font-size: 2rem; }
-    .hero p { font-size: 1rem; }
-}
-@media (min-width: 768px) {
-    .services-grid { grid-template-columns: repeat(2, 1fr); }
-    .footer .container {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .footer-content { flex-direction: row; gap: 2rem; }
-}
-@media (min-width: 992px) {
-    .services-grid { grid-template-columns: repeat(4, 1fr); }
-}
-
-/* Botão flutuante */
+/* Botão Flutuante e Chatbot (Estilos base para mobile) */
 .floating-button-container {
     position: fixed;
-    bottom: 30px;
-    right: 30px;
+    bottom: 20px;
+    right: 20px;
     z-index: 999;
 }
 .floating-button {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 60px;
-    height: 60px;
+    width: 55px;
+    height: 55px;
     background-color: var(--primary-container);
     color: var(--on-primary-container);
     border-radius: 50%;
@@ -421,6 +362,7 @@ body {
     text-decoration: none;
     transition: all 0.3s ease;
     position: relative;
+    cursor: pointer;
 }
 .floating-button:hover {
     transform: translateY(-5px);
@@ -428,66 +370,211 @@ body {
     background-color: #2a4a88;
 }
 .floating-button i { font-size: 1.5rem; }
-.floating-button-text {
-    position: absolute;
-    top: 50%;
-    right: calc(100% + 15px);
-    transform: translateY(-50%);
+.floating-button-text { display: none; } /* Oculto em telas menores */
+
+.chatbot-container {
+    position: fixed;
+    bottom: 90px;
+    right: 5%;
+    width: 90%;
+    height: 70%;
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+.chatbot-header {
     background-color: var(--primary-container);
     color: white;
-    padding: 8px 12px;
-    border-radius: 20px;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.chatbot-header h3 { margin: 0; font-size: 1.1rem; font-weight: 500; }
+.chatbot-close { background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer; }
+.chatbot-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #f9f9f9;
+}
+.message {
+    max-width: 80%;
+    padding: 10px 15px;
+    border-radius: 18px;
     font-size: 0.9rem;
+    line-height: 1.4;
+    word-wrap: break-word; /* Garante quebra de texto */
+}
+.bot-message {
+    background-color: #e6e6e6;
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+}
+.user-message {
+    background-color: var(--primary-container);
+    color: white;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+}
+.chatbot-input {
+    padding: 15px;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    gap: 10px;
+    background-color: white;
+}
+.chatbot-input input {
+    flex: 1;
+    padding: 10px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 20px;
+    outline: none;
+    font-family: inherit;
+}
+.chatbot-input button {
+    background-color: var(--primary-container);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.chatbot-input button:hover { background-color: #2a4a88; }
+.options-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.option-button {
+    background-color: white;
+    border: 1px solid var(--primary-container);
+    color: var(--primary-container);
+    padding: 8px 12px;
+    border-radius: 16px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.option-button:hover { background-color: var(--primary-container); color: white; }
+.final-message {
+    background-color: #e6f7ff;
+    border: 1px solid #91d5ff;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+.whatsapp-button {
+    display: inline-block;
+    background-color: #25D366;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 20px;
+    text-decoration: none;
     font-weight: 500;
-    white-space: nowrap;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    margin-top: 15px;
+    transition: background-color 0.3s;
 }
-.floating-button:hover .floating-button-text {
-    opacity: 1;
-    visibility: visible;
-    right: calc(100% + 10px);
-}
-@media (max-width: 768px) {
-    .floating-button-container { bottom: 20px; right: 20px; }
-    .floating-button { width: 55px; height: 55px; }
-    .floating-button-text { display: none; }
+.whatsapp-button:hover { background-color: #128C7E; }
+
+/* MELHORIA: Abordagem Mobile-First para Responsividade */
+/* Estilos para telas maiores (tablets) */
+@media (min-width: 768px) {
+    .btn { padding: 10px 20px; font-size: 0.9rem; }
+    .hero h1 { font-size: 2.8rem; }
+    .hero p { font-size: 1.2rem; }
+    .section { padding: 7rem 0; }
+    .section-title { font-size: 2.5rem; margin-bottom: 4rem; }
+    .services-grid { grid-template-columns: repeat(2, 1fr); }
+    .tax-reform { padding: 4rem 2.5rem; }
+    .tax-reform h2 { font-size: 2.2rem; }
+    .cta { padding: 7rem 1.5rem; margin-top: 7rem; }
+    .cta h2 { font-size: 2.5rem; }
+    
+    .footer .container {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .footer-content { flex-direction: row; gap: 2rem; }
+    
+    .floating-button-container { bottom: 30px; right: 30px; }
+    .floating-button { width: 60px; height: 60px; }
+    .floating-button-text {
+        display: block; /* Mostra o texto em telas maiores */
+        position: absolute;
+        top: 50%;
+        right: calc(100% + 15px);
+        transform: translateY(-50%);
+        background-color: var(--primary-container);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+    .floating-button:hover .floating-button-text {
+        opacity: 1;
+        visibility: visible;
+        right: calc(100% + 10px);
+    }
+
+    .chatbot-container {
+        width: 350px;
+        height: 500px;
+        bottom: 100px;
+        right: 30px;
+    }
 }
 
+/* Estilos para telas ainda maiores (desktops) */
+@media (min-width: 992px) {
+    .services-grid { grid-template-columns: repeat(4, 1fr); }
+}
 
 </style>
 <body>
     <header class="header">
         <div class="container">
             <a href="index.html" class="logo">
-                <img id="header-logo" src="https://i.postimg.cc/nhmmh4k2/logo-header.png" alt="Logo Padula Contabilidade">
+                <img id="header-logo" src="https://i.postimg.cc/nhmmh4k2/logo-header.png" alt="Logotipo da Padula Contabilidade">
             </a>
             <nav>
                 <a href="https://onvio.com.br/clientcenter/company/66D3B09B1AEC4EC4BD49EC7B2B2F1B98" target="_blank" class="btn btn-outlined">Acesso do Cliente</a>
-
             </nav>
         </div>
     </header>
 
     <main>
         <section class="hero">
-        <!-- Slideshow de fundo -->
-        <div class="hero-slideshow">
-            <div class="slide slide-1 active"></div>
-            <div class="slide slide-2"></div>
-        </div>
-        
-        <!-- Conteúdo do hero -->
-        <div class="container">
-            <div class="hero-content">
-                <h1 class="fade-in">Contabilidade inteligente para a nova economia.</h1>
-                <p class="fade-in-delay-1" style="color: white;">Simplificamos a complexidade fiscal e financeira para que sua empresa possa inovar e crescer sem barreiras.</p>
-                <a href="https://wa.me/5521997999043?text=Olá!%20Gostaria%20de%20agendar%20uma%20consultoria." target="_blank" class="btn btn-filled btn-large fade-in-delay-2">Agende uma Consultoria</a>
+            <div class="hero-slideshow">
+                <div class="slide slide-1 active"></div>
+                <div class="slide slide-2"></div>
             </div>
-        </div>
-    </section>
+            
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="fade-in">Contabilidade inteligente para a nova economia.</h1>
+                    <p class="fade-in-delay-1" style="color: white;">Simplificamos a complexidade fiscal e financeira para que sua empresa possa inovar e crescer sem barreiras.</p>
+                    <a href="https://wa.me/5521997999043?text=Olá!%20Gostaria%20de%20agendar%20uma%20consultoria." target="_blank" class="btn btn-filled btn-large fade-in-delay-2">Agende uma Consultoria</a>
+                </div>
+            </div>
+        </section>
 
         <section id="servicos" class="services section">
             <div class="container">
@@ -542,7 +629,7 @@ body {
         <div class="container">
             <div class="footer-content">
                 <div class="footer-logo">
-                     <img src="https://i.postimg.cc/nhmmh4k2/logo-header.png" alt="Logo Padula Contabilidade">
+                     <img src="https://i.postimg.cc/nhmmh4k2/logo-header.png" alt="Logotipo da Padula Contabilidade no rodapé">
                 </div>
                 <div class="footer-info">
                     <p>Contato: (21) 99799-9043</p>
@@ -556,41 +643,50 @@ body {
             <p class="copyright">© 2025 Padula Contabilidade. Todos os direitos reservados.</p>
         </div>
     </footer>
+    
     <div vw class="enabled">
-  <div vw-access-button class="active"></div>
-  <div vw-plugin-wrapper>
-    <div class="vw-plugin-top-wrapper"></div>
-  </div>
-</div>
+      <div vw-access-button class="active"></div>
+      <div vw-plugin-wrapper>
+        <div class="vw-plugin-top-wrapper"></div>
+      </div>
+    </div>
 
-<!-- Botão flutuante Fale Conosco -->
-<div class="floating-button-container">
-    <a href="#contato" class="floating-button">
-        <i class="fas fa-comments"></i>
-        <span class="floating-button-text">Fale Conosco</span>
-    </a>
-</div>
+    <div class="floating-button-container">
+        <div class="floating-button" id="chatbot-toggle">
+            <i class="fas fa-comments"></i>
+            <span class="floating-button-text">Fale Conosco</span>
+        </div>
+    </div>
+    <div class="chatbot-container" id="chatbot">
+        <div class="chatbot-header">
+            <h3>Atendimento Padula</h3>
+            <button class="chatbot-close" id="chatbot-close" aria-label="Fechar chat">&times;</button>
+        </div>
+        <div class="chatbot-messages" id="chatbot-messages">
+            </div>
+        <div class="chatbot-input">
+            <input type="text" id="chatbot-input" placeholder="Digite sua mensagem...">
+            <button id="chatbot-send" aria-label="Enviar mensagem"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
 
 <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
 <script>
   new window.VLibras.Widget('https://vlibras.gov.br/app');
 </script> 
 <script>
-  
 document.addEventListener('DOMContentLoaded', () => {
     // =========================
     // Slideshow
     // =========================
     const slides = document.querySelectorAll('.slide');
-    let currentSlide = 0;
-    
-    function nextSlide() {
-        slides[currentSlide].classList.remove('active');
-        currentSlide = (currentSlide + 1) % slides.length;
-        slides[currentSlide].classList.add('active');
-    }
-    
-    if (slides.length > 0) {
+    if (slides.length > 1) {
+        let currentSlide = 0;
+        const nextSlide = () => {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        };
         setInterval(nextSlide, 5000);
     }
 
@@ -602,7 +698,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const handleScroll = () => {
             header.classList.toggle('scrolled', window.scrollY > 50);
         };
-        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('scroll', handleScroll, { passive: true }); // Otimiza performance
         handleScroll();
     }
 
@@ -610,7 +706,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Animação ao rolar (IntersectionObserver)
     // =========================
     const animatedElements = document.querySelectorAll('.animate-on-scroll');
-    if (animatedElements.length > 0) {
+    if ("IntersectionObserver" in window) {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -625,26 +721,199 @@ document.addEventListener('DOMContentLoaded', () => {
     // =========================
     // Efeito ripple nos botões
     // =========================
-    const buttons = document.querySelectorAll('.btn');
-    buttons.forEach(button => {
+    document.querySelectorAll('.btn').forEach(button => {
         button.addEventListener('click', function (e) {
             const rect = this.getBoundingClientRect();
             const ripple = document.createElement('span');
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-
-            ripple.style.left = `${x}px`;
-            ripple.style.top = `${y}px`;
             ripple.className = 'ripple';
-
+            ripple.style.left = `${e.clientX - rect.left}px`;
+            ripple.style.top = `${e.clientY - rect.top}px`;
             this.appendChild(ripple);
-
             setTimeout(() => ripple.remove(), 600);
         });
     });
+
+    // =========================
+    // Funcionalidade do Chatbot
+    // =========================
+    const chatbotToggle = document.getElementById('chatbot-toggle');
+    const chatbot = document.getElementById('chatbot');
+    const chatbotClose = document.getElementById('chatbot-close');
+    const chatbotMessages = document.getElementById('chatbot-messages');
+    const chatbotInput = document.getElementById('chatbot-input');
+    const chatbotSend = document.getElementById('chatbot-send');
+
+    if (!chatbotToggle || !chatbot) return; // Garante que o código não quebre se os elementos não existirem
+
+    const departmentContacts = {
+        fiscal: "5521997999043",
+        contabilidade: "5521997999043", 
+        pessoal: "5521997999043",
+        societario: "5521997999043"
+    };
+
+    let chatState = { step: "initial", userName: "", userEmail: "", userPhone: "", selectedDepartment: "" };
+
+    const resetChat = () => {
+        chatbotMessages.innerHTML = '';
+        chatState = { step: "initial", userName: "", userEmail: "", userPhone: "", selectedDepartment: "" };
+        setTimeout(() => handleChatResponse(), 500);
+    };
+
+    chatbotToggle.addEventListener('click', () => {
+        const isOpening = chatbot.style.display !== 'flex';
+        chatbot.style.display = 'flex';
+        if (isOpening) {
+            resetChat();
+            chatbotInput.focus();
+        }
+    });
+
+    chatbotClose.addEventListener('click', () => {
+        chatbot.style.display = 'none';
+    });
+    
+    const processUserMessage = () => {
+        const message = chatbotInput.value.trim();
+        if (message === '') return;
+        addMessage(message, 'user');
+        chatbotInput.value = '';
+        handleChatResponse(message);
+    };
+
+    chatbotSend.addEventListener('click', processUserMessage);
+    chatbotInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') processUserMessage();
+    });
+
+    const addMessage = (content, sender, isHtml = false) => {
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('message', sender === 'user' ? 'user-message' : 'bot-message');
+        if (isHtml) {
+            messageDiv.innerHTML = content;
+        } else {
+            messageDiv.textContent = content;
+        }
+        chatbotMessages.appendChild(messageDiv);
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    };
+
+    const addOptions = (options) => {
+        const optionsContainer = document.createElement('div');
+        optionsContainer.className = 'options-container';
+        options.forEach(option => {
+            const button = document.createElement('button');
+            button.className = 'option-button';
+            button.textContent = option.label;
+            button.onclick = () => {
+                addMessage(option.label, 'user');
+                handleChatResponse(option.value);
+                optionsContainer.remove();
+            };
+            optionsContainer.appendChild(button);
+        });
+        chatbotMessages.appendChild(optionsContainer);
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    };
+    
+    // MELHORIA: Adiciona um indicador de "digitando..."
+    const showTypingIndicator = () => {
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'message bot-message typing-indicator';
+        typingDiv.innerHTML = '<span>.</span><span>.</span><span>.</span>';
+        chatbotMessages.appendChild(typingDiv);
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        return typingDiv;
+    };
+
+    const handleChatResponse = (userMessage = "") => {
+        const typingIndicator = showTypingIndicator();
+        chatbotInput.disabled = true;
+
+        setTimeout(() => {
+            typingIndicator.remove();
+            chatbotInput.disabled = false;
+            
+            switch(chatState.step) {
+                case "initial":
+                    addMessage("Olá! Sou o assistente virtual da Padula Contabilidade. Para começarmos, qual é o seu nome?", 'bot');
+                    chatState.step = "getName";
+                    break;
+                
+                case "getName":
+                    chatState.userName = userMessage;
+                    addMessage(`Prazer, ${userMessage}! E qual é o seu melhor e-mail para contato?`, 'bot');
+                    chatState.step = "getEmail";
+                    break;
+                
+                case "getEmail":
+                    // MELHORIA: Validação de e-mail
+                    if (!/\S+@\S+\.\S+/.test(userMessage)) {
+                        addMessage("Por favor, insira um e-mail válido.", 'bot');
+                        return; // Mantém no mesmo passo
+                    }
+                    chatState.userEmail = userMessage;
+                    addMessage("Ótimo! Agora, por favor, informe seu telefone com DDD.", 'bot');
+                    chatState.step = "getPhone";
+                    break;
+                
+                case "getPhone":
+                    chatState.userPhone = userMessage;
+                    addMessage("Perfeito! Com qual setor você gostaria de falar?", 'bot');
+                    addOptions([
+                        { label: "Fiscal", value: "fiscal" },
+                        { label: "Contabilidade", value: "contabilidade" },
+                        { label: "Dep. Pessoal", value: "pessoal" },
+                        { label: "Societário", value: "societario" }
+                    ]);
+                    chatState.step = "selectDepartment";
+                    break;
+                
+                case "selectDepartment":
+                    if (departmentContacts[userMessage]) {
+                        chatState.selectedDepartment = userMessage;
+                        const finalMessage = generateFinalMessage();
+                        addMessage("Obrigado! Preparamos uma mensagem para você enviar diretamente para o setor responsável. Basta clicar no botão abaixo:", 'bot');
+                        
+                        const whatsappNumber = departmentContacts[chatState.selectedDepartment];
+                        const whatsappMessage = encodeURIComponent(finalMessage.replace(/<br>/g, '\n'));
+                        const whatsappLink = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
+                        
+                        addMessage(
+                            `${finalMessage}<a href="${whatsappLink}" target="_blank" class="whatsapp-button"><i class="fab fa-whatsapp"></i> Enviar para o Setor</a>`, 
+                            'bot', 
+                            true
+                        );
+                        chatState.step = "complete";
+                    } else {
+                        addMessage("Opção inválida. Por favor, escolha um dos setores abaixo.", 'bot');
+                        addOptions([
+                            { label: "Fiscal", value: "fiscal" },
+                            { label: "Contabilidade", value: "contabilidade" },
+                            { label: "Dep. Pessoal", value: "pessoal" },
+                            { label: "Societário", value: "societario" }
+                        ]);
+                    }
+                    break;
+                
+                case "complete":
+                    addMessage("Obrigado pelo contato! Se precisar de algo mais, é só chamar.", 'bot');
+                    break;
+            }
+            chatbotInput.focus();
+        }, 1000);
+    };
+
+    function generateFinalMessage() {
+        const departmentMap = {
+            "fiscal": "Fiscal",
+            "contabilidade": "Contabilidade",
+            "pessoal": "Departamento Pessoal",
+            "societario": "Societário"
+        };
+        return `Olá! Meu nome é *${chatState.userName}*.<br>Gostaria de falar com o setor *${departmentMap[chatState.selectedDepartment]}*.<br><br>Meus dados:<br>E-mail: ${chatState.userEmail}<br>Telefone: ${chatState.userPhone}`;
+    }
 });
 </script>
-        
 </body>
 </html>
-
