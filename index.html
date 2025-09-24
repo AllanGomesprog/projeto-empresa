@@ -10,35 +10,46 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    </head>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+</head>
 <style>
-  :root {
-    --primary-container: #3A5A99;
-    --on-primary-container: #FFFFFF;
-    --primary-fixed: #DDE2FF;
-    --on-primary-fixed: #213B70;
-    --surface: #F8F9FA;
-    --surface-container: #FFFFFF;
-    --on-surface: #1A202C;
-    --outline: #CBD5E0;
-    --text-muted: #64748B;
+    :root {
+        --primary-container: #3A5A99;
+        --on-primary-container: #FFFFFF;
+        --primary-fixed: #DDE2FF;
+        --on-primary-fixed: #213B70;
+        --surface: #F8F9FA;
+        --surface-container: #FFFFFF;
+        --on-surface: #1A202C;
+        --outline: #CBD5E0;
+        --text-muted: #64748B;
 
-    --font-family: 'Roboto', sans-serif;
-    --header-height: 80px;
-    --border-radius-large: 16px;
-    --border-radius-full: 999px;
-    --shadow-1: 0 1px 3px rgba(0,0,0,0.1);
-    --shadow-2: 0 4px 6px rgba(0,0,0,0.1);
-}
+        --font-family: 'Roboto', sans-serif;
+        --header-height: 80px;
+        --border-radius-large: 16px;
+        --border-radius-full: 999px;
+        --shadow-1: 0 1px 3px rgba(0,0,0,0.1);
+        --shadow-2: 0 4px 6px rgba(0,0,0,0.1);
+    }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-html {
-    scroll-behavior: smooth;
-    scroll-padding-top: var(--header-height);
-}
+    html {
+        scroll-behavior: smooth;
+        scroll-padding-top: var(--header-height);
+    }
 
-body {
+ 
+    .container {
+        max-width: 1140px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+    }
+
+  body {
     font-family: var(--font-family);
     background-color: var(--surface);
     color: var(--on-surface);
@@ -46,10 +57,22 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-.container {
-    max-width: 1140px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
+/* CORREÇÃO: Adiciona espaço para o header fixo */
+main {
+    padding-top: var(--header-height);
+}
+
+.hero {
+    position: relative;
+    height: 100vh;
+    min-height: 600px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    color: var(--on-primary-container);
+    /* Compensa o padding do main */
+    margin-top: calc(-1 * var(--header-height));
+    height: calc(100vh + var(--header-height));
 }
 
 /* Header fixo */
@@ -65,490 +88,568 @@ body {
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
-.header .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 100%;
-}
+    .header .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 100%;
+    }
 
-.header .logo img {
-    /* MELHORIA: Ajustado para se encaixar melhor na altura do header */
-    height: 60px; 
-    transition: all 0.3s ease;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-}
+    .header .logo img {
+        height: 60px; 
+        transition: all 0.3s ease;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    }
 
-.header .logo img:hover {
-    transform: scale(1.05);
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
-}
+    .header .logo img:hover {
+        transform: scale(1.05);
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+    }
 
-.header nav {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-}
+    .header nav {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
 
-/* Botões base */
-.btn {
-    position: relative;
-    overflow: hidden;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 8px 16px;
-    font-weight: 500;
-    font-size: 0.85rem;
-    border-radius: var(--border-radius-full);
-    text-decoration: none;
-    transition: all 0.3s ease;
-    border: 1px solid transparent;
-    white-space: nowrap;
-    cursor: pointer;
-}
+    /* Botões base */
+    .btn {
+        position: relative;
+        overflow: hidden;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 8px 16px;
+        font-weight: 500;
+        font-size: 0.85rem;
+        border-radius: var(--border-radius-full);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: 1px solid transparent;
+        white-space: nowrap;
+        cursor: pointer;
+    }
 
-.btn-filled {
-    background-color: var(--primary-container);
-    color: var(--on-primary-container);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-.btn-filled:hover {
-    box-shadow: var(--shadow-2);
-    transform: translateY(-2px);
-    background-color: #2a4a88;
-}
+    .btn-filled {
+        background-color: var(--primary-container);
+        color: var(--on-primary-container);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .btn-filled:hover {
+        box-shadow: var(--shadow-2);
+        transform: translateY(-2px);
+        background-color: #2a4a88;
+    }
 
-.btn-outlined {
-    background-color: transparent;
-    color: var(--primary-container);
-    border-color: var(--primary-container);
-}
-.btn-outlined:hover {
-    background-color: var(--primary-fixed);
-    transform: translateY(-2px);
-}
+    .btn-outlined {
+        background-color: transparent;
+        color: var(--primary-container);
+        border-color: var(--primary-container);
+    }
+    .btn-outlined:hover {
+        background-color: var(--primary-fixed);
+        transform: translateY(-2px);
+    }
 
-.btn-tonal {
-    background-color: var(--primary-fixed);
-    color: var(--on-primary-fixed);
-    font-weight: 600;
-}
-.btn-tonal:hover {
-    box-shadow: var(--shadow-1);
-    transform: translateY(-2px);
-}
+    .btn-tonal {
+        background-color: var(--primary-fixed);
+        color: var(--on-primary-fixed);
+        font-weight: 600;
+    }
+    .btn-tonal:hover {
+        box-shadow: var(--shadow-1);
+        transform: translateY(-2px);
+    }
 
-.btn-large {
-    padding: 16px 36px;
-    font-size: 1rem;
-}
+    .btn-large {
+        padding: 16px 36px;
+        font-size: 1rem;
+    }
 
-.ripple {
-    position: absolute;
-    border-radius: 50%;
-    transform: scale(0);
-    animation: ripple-effect 0.6s linear;
-    background-color: rgba(255, 255, 255, 0.7);
-}
-@keyframes ripple-effect {
-    to { transform: scale(4); opacity: 0; }
-}
+    .ripple {
+        position: absolute;
+        border-radius: 50%;
+        transform: scale(0);
+        animation: ripple-effect 0.6s linear;
+        background-color: rgba(255, 255, 255, 0.7);
+    }
+    @keyframes ripple-effect {
+        to { transform: scale(4); opacity: 0; }
+    }
 
-/* Hero Section */
-.hero {
-    position: relative;
-    height: 100vh;
-    min-height: 600px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    color: var(--on-primary-container);
-}
 
-.hero-slideshow {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    z-index: 1;
-}
-.slide {
-    position: absolute;
-    width: 100%; height: 100%;
-    opacity: 0;
-    transition: opacity 1s ease-in-out;
-    background-size: cover;
-    background-position: center;
-}
-.slide.active { opacity: 1; }
-.slide-1 { background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://i.postimg.cc/NfzYw2qz/imagem-fundo-section-3.png'); }
-.slide-2 { background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://i.postimg.cc/02L3fYqP/imagem-fundo-section.png'); }
+    .hero-slideshow {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        z-index: 1;
+    }
+    .slide {
+        position: absolute;
+        width: 100%; height: 100%;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+        background-size: cover;
+        background-position: center;
+    }
+    .slide.active { opacity: 1; }
+    .slide-1 { background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://i.postimg.cc/NfzYw2qz/imagem-fundo-section-3.png'); }
+    .slide-2 { background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://i.postimg.cc/02L3fYqP/imagem-fundo-section.png'); }
 
-.hero-content {
-    position: relative;
-    z-index: 2;
-    text-align: center;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem;
-}
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
 
-.hero h1 {
-    color: white;
-    font-size: 2.2rem;
-    line-height: 1.2;
-    margin-bottom: 1.5rem;
-    font-weight: 700;
-    letter-spacing: -1px;
-}
-.hero p {
-    color: white;
-    font-size: 1.1rem;
-    margin-bottom: 2.5rem;
-    max-width: 650px;
-    margin-left: auto;
-    margin-right: auto;
-}
+    .hero h1 {
+        color: white;
+        font-size: 2.2rem;
+        line-height: 1.2;
+        margin-bottom: 1.5rem;
+        font-weight: 700;
+        letter-spacing: -1px;
+    }
+    .hero p {
+        color: white;
+        font-size: 1.1rem;
+        margin-bottom: 2.5rem;
+        max-width: 650px;
+        margin-left: auto;
+        margin-right: auto;
+    }
 
-/* Seções */
-.section { padding: 5rem 0; }
-.section-title {
-    text-align: center;
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 3rem;
-    color: var(--on-surface);
-    letter-spacing: -0.5px;
-}
+    /* Seções */
+    .section { padding: 5rem 0; }
+    .section-title {
+        text-align: center;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 3rem;
+        color: var(--on-surface);
+        letter-spacing: -0.5px;
+    }
 
-.services { background-color: var(--surface); }
-.services-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-}
-.service-card {
-    background-color: var(--surface-container);
-    padding: 2rem;
-    border-radius: var(--border-radius-large);
-    box-shadow: var(--shadow-1);
-    text-align: center;
-    border: 1px solid var(--outline);
-    transition: box-shadow 0.4s ease, transform 0.3s ease;
-}
-.service-card:hover {
-    box-shadow: var(--shadow-2);
-    transform: translateY(-5px);
-}
-.service-icon {
-    font-size: 1.8rem;
-    width: 60px;
-    height: 60px;
-    margin: 0 auto 1.5rem auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background-color: var(--primary-fixed);
-    color: var(--on-primary-fixed);
-}
-.service-card h3 { font-size: 1.3rem; margin-bottom: 0.75rem; }
-.service-card p { color: var(--text-muted); font-size: 0.95rem; }
+    .services { background-color: var(--surface); }
+    .services-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    .service-card {
+        background-color: var(--surface-container);
+        padding: 2rem;
+        border-radius: var(--border-radius-large);
+        box-shadow: var(--shadow-1);
+        text-align: center;
+        border: 1px solid var(--outline);
+        transition: box-shadow 0.4s ease, transform 0.3s ease;
+    }
+    .service-card:hover {
+        box-shadow: var(--shadow-2);
+        transform: translateY(-5px);
+    }
+    .service-icon {
+        font-size: 1.8rem;
+        width: 60px;
+        height: 60px;
+        margin: 0 auto 1.5rem auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background-color: var(--primary-fixed);
+        color: var(--on-primary-fixed);
+    }
+    .service-card h3 { font-size: 1.3rem; margin-bottom: 0.75rem; }
+    .service-card p { color: var(--text-muted); font-size: 0.95rem; }
 
-.tax-reform {
-    background-color: var(--surface-container);
-    text-align: center;
-    border-radius: var(--border-radius-large);
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 2.5rem 1.5rem;
-    border: 1px solid var(--outline);
-}
-.tax-reform h2 { font-size: 1.8rem; color: var(--on-surface); margin-bottom: 1rem; }
-.tax-reform p {
-    color: var(--text-muted);
-    margin-bottom: 2rem;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-}
+    .tax-reform {
+        background-color: var(--surface-container);
+        text-align: center;
+        border-radius: var(--border-radius-large);
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 2.5rem 1.5rem;
+        border: 1px solid var(--outline);
+    }
+    .tax-reform h2 { font-size: 1.8rem; color: var(--on-surface); margin-bottom: 1rem; }
+    .tax-reform p {
+        color: var(--text-muted);
+        margin-bottom: 2rem;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
 
-.cta {
-    padding: 5rem 1.5rem;
-    background-color: var(--primary-container);
-    text-align: center;
-    margin-top: 5rem;
-}
-.cta-content { max-width: 700px; margin: 0 auto; }
-.cta h2 { font-size: 2rem; margin-bottom: 1rem; color: white; }
-.cta p { margin-bottom: 2rem; color: #e2e8f0; }
+    .cta {
+        padding: 5rem 1.5rem;
+        background-color: var(--primary-container);
+        text-align: center;
+        margin-top: 5rem;
+    }
+    .cta-content { max-width: 700px; margin: 0 auto; }
+    .cta h2 { font-size: 2rem; margin-bottom: 1rem; color: white; }
+    .cta p { margin-bottom: 2rem; color: #e2e8f0; }
 
-/* Footer */
-.footer {
-    padding: 4rem 0 3rem 0;
-    background-color: var(--surface);
-}
-.footer .container, .footer-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
-}
-.footer-logo img { height: 60px; opacity: 0.8; }
-.footer-info p {
-    color: var(--text-muted);
-    margin: 0.1rem 0;
-    text-align: center;
-}
-.social-icons {
-    display: flex;
-    gap: 1.5rem;
-}
-.social-icons a {
-    color: var(--text-muted);
-    font-size: 1.5rem;
-    transition: color 0.4s ease, transform 0.3s ease;
-}
-.social-icons a:hover {
-    color: var(--primary-container);
-    transform: translateY(-3px);
-}
-.copyright {
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    border-top: 1px solid var(--outline);
-    width: 100%;
-    padding-top: 2rem;
-    text-align: center;
-}
+    /* Footer */
+    .footer {
+        padding: 4rem 0 3rem 0;
+        background-color: var(--surface);
+    }
+    .footer .container, .footer-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+    }
+    .footer-logo img { height: 60px; opacity: 0.8; }
+    .footer-info p {
+        color: var(--text-muted);
+        margin: 0.1rem 0;
+        text-align: center;
+    }
+    .social-icons {
+        display: flex;
+        gap: 1.5rem;
+    }
+    .social-icons a {
+        color: var(--text-muted);
+        font-size: 1.5rem;
+        transition: color 0.4s ease, transform 0.3s ease;
+    }
+    .social-icons a:hover {
+        color: var(--primary-container);
+        transform: translateY(-3px);
+    }
+    .copyright {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        border-top: 1px solid var(--outline);
+        width: 100%;
+        padding-top: 2rem;
+        text-align: center;
+    }
 
-/* Animações */
-.fade-in { opacity:0; animation: fadeIn 1s ease-out forwards; }
-.fade-in-delay-1 { opacity:0; animation: fadeIn 1s 0.2s ease-out forwards; }
-.fade-in-delay-2 { opacity:0; animation: fadeIn 1s 0.4s ease-out forwards; }
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+    /* Animações */
+    .fade-in { opacity:0; animation: fadeIn 1s ease-out forwards; }
+    .fade-in-delay-1 { opacity:0; animation: fadeIn 1s 0.2s ease-out forwards; }
+    .fade-in-delay-2 { opacity:0; animation: fadeIn 1s 0.4s ease-out forwards; }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
 
-.animate-on-scroll {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-}
-.animate-on-scroll.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
+    .animate-on-scroll {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .animate-on-scroll.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
 
-/* Botão Flutuante e Chatbot (Estilos base para mobile) */
-.floating-button-container {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 999;
-}
-.floating-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 55px;
-    height: 55px;
-    background-color: var(--primary-container);
-    color: var(--on-primary-container);
-    border-radius: 50%;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-    text-decoration: none;
-    transition: all 0.3s ease;
-    position: relative;
-    cursor: pointer;
-}
-.floating-button:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-    background-color: #2a4a88;
-}
-.floating-button i { font-size: 1.5rem; }
-.floating-button-text { display: none; } /* Oculto em telas menores */
+    /* Botão Flutuante e Chatbot (Estilos base para mobile) */
+    .floating-button-container {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 999;
+    }
+    .floating-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 55px;
+        height: 55px;
+        background-color: var(--primary-container);
+        color: var(--on-primary-container);
+        border-radius: 50%;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        position: relative;
+        cursor: pointer;
+    }
+    .floating-button:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+        background-color: #2a4a88;
+    }
+    .floating-button i { font-size: 1.5rem; }
+    .floating-button-text { display: none; } /* Oculto em telas menores */
 
-.chatbot-container {
-    position: fixed;
-    bottom: 90px;
-    right: 5%;
-    width: 90%;
-    height: 70%;
-    background-color: white;
-    border-radius: 16px;
-    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    display: none;
-    flex-direction: column;
-    overflow: hidden;
-    transition: all 0.3s ease;
-}
-.chatbot-header {
-    background-color: var(--primary-container);
-    color: white;
-    padding: 15px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.chatbot-header h3 { margin: 0; font-size: 1.1rem; font-weight: 500; }
-.chatbot-close { background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer; }
-.chatbot-messages {
-    flex: 1;
-    padding: 15px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    background-color: #f9f9f9;
-}
-.message {
-    max-width: 80%;
-    padding: 10px 15px;
-    border-radius: 18px;
-    font-size: 0.9rem;
-    line-height: 1.4;
-    word-wrap: break-word; /* Garante quebra de texto */
-}
-.bot-message {
-    background-color: #e6e6e6;
-    align-self: flex-start;
-    border-bottom-left-radius: 4px;
-}
-.user-message {
-    background-color: var(--primary-container);
-    color: white;
-    align-self: flex-end;
-    border-bottom-right-radius: 4px;
-}
-.chatbot-input {
-    padding: 15px;
-    border-top: 1px solid #e0e0e0;
-    display: flex;
-    gap: 10px;
-    background-color: white;
-}
-.chatbot-input input {
-    flex: 1;
-    padding: 10px 15px;
-    border: 1px solid #e0e0e0;
-    border-radius: 20px;
-    outline: none;
-    font-family: inherit;
-}
-.chatbot-input button {
-    background-color: var(--primary-container);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-.chatbot-input button:hover { background-color: #2a4a88; }
-.options-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-.option-button {
-    background-color: white;
-    border: 1px solid var(--primary-container);
-    color: var(--primary-container);
-    padding: 8px 12px;
-    border-radius: 16px;
-    font-size: 0.8rem;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-.option-button:hover { background-color: var(--primary-container); color: white; }
-.final-message {
-    background-color: #e6f7ff;
-    border: 1px solid #91d5ff;
-    padding: 15px;
-    border-radius: 8px;
-    margin-top: 10px;
-    font-size: 0.9rem;
-}
-.whatsapp-button {
-    display: inline-block;
-    background-color: #25D366;
-    color: white;
-    padding: 10px 15px;
-    border-radius: 20px;
-    text-decoration: none;
-    font-weight: 500;
-    margin-top: 15px;
-    transition: background-color 0.3s;
-}
-.whatsapp-button:hover { background-color: #128C7E; }
-
-/* MELHORIA: Abordagem Mobile-First para Responsividade */
-/* Estilos para telas maiores (tablets) */
-@media (min-width: 768px) {
-    .btn { padding: 10px 20px; font-size: 0.9rem; }
-    .hero h1 { font-size: 2.8rem; }
-    .hero p { font-size: 1.2rem; }
-    .section { padding: 7rem 0; }
-    .section-title { font-size: 2.5rem; margin-bottom: 4rem; }
-    .services-grid { grid-template-columns: repeat(2, 1fr); }
-    .tax-reform { padding: 4rem 2.5rem; }
-    .tax-reform h2 { font-size: 2.2rem; }
-    .cta { padding: 7rem 1.5rem; margin-top: 7rem; }
-    .cta h2 { font-size: 2.5rem; }
-    
-    .footer .container {
-        flex-direction: row;
+    .chatbot-container {
+        position: fixed;
+        bottom: 90px;
+        right: 5%;
+        width: 90%;
+        height: 70%;
+        background-color: white;
+        border-radius: 16px;
+        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        display: none;
+        flex-direction: column;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    .chatbot-header {
+        background-color: var(--primary-container);
+        color: white;
+        padding: 15px 20px;
+        display: flex;
         justify-content: space-between;
         align-items: center;
     }
-    .footer-content { flex-direction: row; gap: 2rem; }
-    
-    .floating-button-container { bottom: 30px; right: 30px; }
-    .floating-button { width: 60px; height: 60px; }
-    .floating-button-text {
-        display: block; /* Mostra o texto em telas maiores */
-        position: absolute;
-        top: 50%;
-        right: calc(100% + 15px);
-        transform: translateY(-50%);
+    .chatbot-header h3 { margin: 0; font-size: 1.1rem; font-weight: 500; }
+    .chatbot-close { background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer; }
+    .chatbot-messages {
+        flex: 1;
+        padding: 15px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background-color: #f9f9f9;
+    }
+    .message {
+        max-width: 80%;
+        padding: 10px 15px;
+        border-radius: 18px;
+        font-size: 0.9rem;
+        line-height: 1.4;
+        word-wrap: break-word; /* Garante quebra de texto */
+    }
+    .bot-message {
+        background-color: #e6e6e6;
+        align-self: flex-start;
+        border-bottom-left-radius: 4px;
+    }
+    .user-message {
         background-color: var(--primary-container);
         color: white;
-        padding: 8px 12px;
+        align-self: flex-end;
+        border-bottom-right-radius: 4px;
+    }
+    .chatbot-input {
+        padding: 15px;
+        border-top: 1px solid #e0e0e0;
+        display: flex;
+        gap: 10px;
+        background-color: white;
+    }
+    .chatbot-input input {
+        flex: 1;
+        padding: 10px 15px;
+        border: 1px solid #e0e0e0;
         border-radius: 20px;
+        outline: none;
+        font-family: inherit;
+    }
+    .chatbot-input button {
+        background-color: var(--primary-container);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .chatbot-input button:hover { background-color: #2a4a88; }
+    .options-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .option-button {
+        background-color: white;
+        border: 1px solid var(--primary-container);
+        color: var(--primary-container);
+        padding: 8px 12px;
+        border-radius: 16px;
+        font-size: 0.8rem;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .option-button:hover { background-color: var(--primary-container); color: white; }
+    .final-message {
+        background-color: #e6f7ff;
+        border: 1px solid #91d5ff;
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 10px;
         font-size: 0.9rem;
+    }
+    .whatsapp-button {
+        display: inline-block;
+        background-color: #25D366;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 20px;
+        text-decoration: none;
         font-weight: 500;
-        white-space: nowrap;
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        margin-top: 15px;
+        transition: background-color 0.3s;
     }
-    .floating-button:hover .floating-button-text {
-        opacity: 1;
-        visibility: visible;
-        right: calc(100% + 10px);
+    .whatsapp-button:hover { background-color: #128C7E; }
+
+    /* MELHORIA: Abordagem Mobile-First para Responsividade */
+    /* Estilos para telas maiores (tablets) */
+    @media (min-width: 768px) {
+        .btn { padding: 10px 20px; font-size: 0.9rem; }
+        .hero h1 { font-size: 2.8rem; }
+        .hero p { font-size: 1.2rem; }
+        .section { padding: 7rem 0; }
+        .section-title { font-size: 2.5rem; margin-bottom: 4rem; }
+        .services-grid { grid-template-columns: repeat(2, 1fr); }
+        .tax-reform { padding: 4rem 2.5rem; }
+        .tax-reform h2 { font-size: 2.2rem; }
+        .cta { padding: 7rem 1.5rem; margin-top: 7rem; }
+        .cta h2 { font-size: 2.5rem; }
+        
+        .footer .container {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .footer-content { flex-direction: row; gap: 2rem; }
+        
+        .floating-button-container { bottom: 30px; right: 30px; }
+        .floating-button { width: 60px; height: 60px; }
+        .floating-button-text {
+            display: block; /* Mostra o texto em telas maiores */
+            position: absolute;
+            top: 50%;
+            right: calc(100% + 15px);
+            transform: translateY(-50%);
+            background-color: var(--primary-container);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        .floating-button:hover .floating-button-text {
+            opacity: 1;
+            visibility: visible;
+            right: calc(100% + 10px);
+        }
+
+        .chatbot-container {
+            width: 350px;
+            height: 500px;
+            bottom: 100px;
+            right: 30px;
+        }
     }
 
-    .chatbot-container {
-        width: 350px;
-        height: 500px;
-        bottom: 100px;
-        right: 30px;
+    /* Estilos para telas ainda maiores (desktops) */
+    @media (min-width: 992px) {
+        .services-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    /* Botão Painel Admin - Versão Premium */
+.admin-link {
+    position: fixed;
+    top: 100px;
+    left: 20px;
+    z-index: 1001;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+}
+
+.admin-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.admin-link:hover::before {
+    left: 100%;
+}
+
+.admin-link:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.5);
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    color: white;
+    text-decoration: none;
+}
+
+.admin-link:active {
+    transform: translateY(-1px) scale(1.02);
+}
+
+.admin-link i {
+    font-size: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.admin-link:hover i {
+    transform: rotate(15deg);
+}
+
+/* Efeito de pulso sutil */
+@keyframes pulse-glow {
+    0% { box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4); }
+    50% { box-shadow: 0 6px 25px rgba(102, 126, 234, 0.6); }
+    100% { box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4); }
+}
+
+.admin-link {
+    animation: pulse-glow 3s infinite;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .admin-link {
+        top: 90px;
+        left: 15px;
+        padding: 10px 16px;
+        font-size: 0.8rem;
+        border-radius: 25px;
     }
 }
 
-/* Estilos para telas ainda maiores (desktops) */
-@media (min-width: 992px) {
-    .services-grid { grid-template-columns: repeat(4, 1fr); }
-}
 
 </style>
 <body>
+    <!-- Link para o painel administrativo (visível apenas para administradores) -->
+    <!-- Link para o painel administrativo -->
+<a href="admin.html" class="admin-link" id="adminLink" style="display: none;">
+    <i class="fas fa-cog"></i>
+    Painel Atendimento
+</a>
+
     <header class="header">
         <div class="container">
             <a href="index.html" class="logo">
@@ -675,245 +776,294 @@ body {
   new window.VLibras.Widget('https://vlibras.gov.br/app');
 </script> 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
     // =========================
-    // Slideshow
+    // Configuração do Firebase
     // =========================
-    const slides = document.querySelectorAll('.slide');
-    if (slides.length > 1) {
-        let currentSlide = 0;
-        const nextSlide = () => {
-            slides[currentSlide].classList.remove('active');
-            currentSlide = (currentSlide + 1) % slides.length;
-            slides[currentSlide].classList.add('active');
-        };
-        setInterval(nextSlide, 5000);
-    }
+    // Substitua pela configuração do seu projeto Firebase
+   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyDlnpekdefRb6v7VWD1cieFHsx0dmDQu-k",
+  authDomain: "padula-contabilidade.firebaseapp.com",
+  databaseURL: "https://padula-contabilidade-default-rtdb.firebaseio.com",
+  projectId: "padula-contabilidade",
+  storageBucket: "padula-contabilidade.firebasestorage.app",
+  messagingSenderId: "840272874573",
+  appId: "1:840272874573:web:bcd5297c6e92dbd7526004",
+  measurementId: "G-NZ4WCXFRBZ"
+};
 
-    // =========================
-    // Header scroll
-    // =========================
-    const header = document.querySelector('.header');
-    if (header) {
-        const handleScroll = () => {
-            header.classList.toggle('scrolled', window.scrollY > 50);
-        };
-        window.addEventListener('scroll', handleScroll, { passive: true }); // Otimiza performance
-        handleScroll();
-    }
+    // Inicializar Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-    // =========================
-    // Animação ao rolar (IntersectionObserver)
-    // =========================
-    const animatedElements = document.querySelectorAll('.animate-on-scroll');
-    if ("IntersectionObserver" in window) {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1 });
-        animatedElements.forEach(element => observer.observe(element));
-    }
-
-    // =========================
-    // Efeito ripple nos botões
-    // =========================
-    document.querySelectorAll('.btn').forEach(button => {
-        button.addEventListener('click', function (e) {
-            const rect = this.getBoundingClientRect();
-            const ripple = document.createElement('span');
-            ripple.className = 'ripple';
-            ripple.style.left = `${e.clientX - rect.left}px`;
-            ripple.style.top = `${e.clientY - rect.top}px`;
-            this.appendChild(ripple);
-            setTimeout(() => ripple.remove(), 600);
-        });
-    });
-
-    // =========================
-    // Funcionalidade do Chatbot
-    // =========================
-    const chatbotToggle = document.getElementById('chatbot-toggle');
-    const chatbot = document.getElementById('chatbot');
-    const chatbotClose = document.getElementById('chatbot-close');
-    const chatbotMessages = document.getElementById('chatbot-messages');
-    const chatbotInput = document.getElementById('chatbot-input');
-    const chatbotSend = document.getElementById('chatbot-send');
-
-    if (!chatbotToggle || !chatbot) return; // Garante que o código não quebre se os elementos não existirem
-
-    const departmentContacts = {
-        fiscal: "5521997999043",
-        contabilidade: "5521997999043", 
-        pessoal: "5521997999043",
-        societario: "5521997999043"
-    };
-
-    let chatState = { step: "initial", userName: "", userEmail: "", userPhone: "", selectedDepartment: "" };
-
-    const resetChat = () => {
-        chatbotMessages.innerHTML = '';
-        chatState = { step: "initial", userName: "", userEmail: "", userPhone: "", selectedDepartment: "" };
-        setTimeout(() => handleChatResponse(), 500);
-    };
-
-    chatbotToggle.addEventListener('click', () => {
-        const isOpening = chatbot.style.display !== 'flex';
-        chatbot.style.display = 'flex';
-        if (isOpening) {
-            resetChat();
-            chatbotInput.focus();
-        }
-    });
-
-    chatbotClose.addEventListener('click', () => {
-        chatbot.style.display = 'none';
-    });
+    // Verificar se é administrador (simulação - em produção use autenticação adequada)
+    const isAdmin = localStorage.getItem('isAdmin') === 'true' || 
+                   window.location.search.includes('admin=true');
     
-    const processUserMessage = () => {
-        const message = chatbotInput.value.trim();
-        if (message === '') return;
-        addMessage(message, 'user');
-        chatbotInput.value = '';
-        handleChatResponse(message);
-    };
+    if (isAdmin) {
+        document.getElementById('adminLink').style.display = 'block';
+        localStorage.setItem('isAdmin', 'true');
+    }
 
-    chatbotSend.addEventListener('click', processUserMessage);
-    chatbotInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') processUserMessage();
-    });
-
-    const addMessage = (content, sender, isHtml = false) => {
-        const messageDiv = document.createElement('div');
-        messageDiv.classList.add('message', sender === 'user' ? 'user-message' : 'bot-message');
-        if (isHtml) {
-            messageDiv.innerHTML = content;
-        } else {
-            messageDiv.textContent = content;
-        }
-        chatbotMessages.appendChild(messageDiv);
-        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-    };
-
-    const addOptions = (options) => {
-        const optionsContainer = document.createElement('div');
-        optionsContainer.className = 'options-container';
-        options.forEach(option => {
-            const button = document.createElement('button');
-            button.className = 'option-button';
-            button.textContent = option.label;
-            button.onclick = () => {
-                addMessage(option.label, 'user');
-                handleChatResponse(option.value);
-                optionsContainer.remove();
+    document.addEventListener('DOMContentLoaded', () => {
+        // =========================
+        // Slideshow
+        // =========================
+        const slides = document.querySelectorAll('.slide');
+        if (slides.length > 1) {
+            let currentSlide = 0;
+            const nextSlide = () => {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add('active');
             };
-            optionsContainer.appendChild(button);
-        });
-        chatbotMessages.appendChild(optionsContainer);
-        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-    };
-    
-    // MELHORIA: Adiciona um indicador de "digitando..."
-    const showTypingIndicator = () => {
-        const typingDiv = document.createElement('div');
-        typingDiv.className = 'message bot-message typing-indicator';
-        typingDiv.innerHTML = '<span>.</span><span>.</span><span>.</span>';
-        chatbotMessages.appendChild(typingDiv);
-        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-        return typingDiv;
-    };
+            setInterval(nextSlide, 5000);
+        }
 
-    const handleChatResponse = (userMessage = "") => {
-        const typingIndicator = showTypingIndicator();
-        chatbotInput.disabled = true;
+        // =========================
+        // Header scroll
+        // =========================
+        const header = document.querySelector('.header');
+        if (header) {
+            const handleScroll = () => {
+                header.classList.toggle('scrolled', window.scrollY > 50);
+            };
+            window.addEventListener('scroll', handleScroll, { passive: true });
+            handleScroll();
+        }
 
-        setTimeout(() => {
-            typingIndicator.remove();
-            chatbotInput.disabled = false;
-            
-            switch(chatState.step) {
-                case "initial":
-                    addMessage("Olá! Sou o assistente virtual da Padula Contabilidade. Para começarmos, qual é o seu nome?", 'bot');
-                    chatState.step = "getName";
-                    break;
-                
-                case "getName":
-                    chatState.userName = userMessage;
-                    addMessage(`Prazer, ${userMessage}! E qual é o seu melhor e-mail para contato?`, 'bot');
-                    chatState.step = "getEmail";
-                    break;
-                
-                case "getEmail":
-                    // MELHORIA: Validação de e-mail
-                    if (!/\S+@\S+\.\S+/.test(userMessage)) {
-                        addMessage("Por favor, insira um e-mail válido.", 'bot');
-                        return; // Mantém no mesmo passo
+        // =========================
+        // Animação ao rolar (IntersectionObserver)
+        // =========================
+        const animatedElements = document.querySelectorAll('.animate-on-scroll');
+        if ("IntersectionObserver" in window) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
                     }
-                    chatState.userEmail = userMessage;
-                    addMessage("Ótimo! Agora, por favor, informe seu telefone com DDD.", 'bot');
-                    chatState.step = "getPhone";
-                    break;
+                });
+            }, { threshold: 0.1 });
+            animatedElements.forEach(element => observer.observe(element));
+        }
+
+        // =========================
+        // Efeito ripple nos botões
+        // =========================
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('click', function (e) {
+                const rect = this.getBoundingClientRect();
+                const ripple = document.createElement('span');
+                ripple.className = 'ripple';
+                ripple.style.left = `${e.clientX - rect.left}px`;
+                ripple.style.top = `${e.clientY - rect.top}px`;
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // =========================
+        // Funcionalidade do Chatbot
+        // =========================
+        const chatbotToggle = document.getElementById('chatbot-toggle');
+        const chatbot = document.getElementById('chatbot');
+        const chatbotClose = document.getElementById('chatbot-close');
+        const chatbotMessages = document.getElementById('chatbot-messages');
+        const chatbotInput = document.getElementById('chatbot-input');
+        const chatbotSend = document.getElementById('chatbot-send');
+
+        if (!chatbotToggle || !chatbot) return;
+
+        const departmentContacts = {
+            fiscal: "5521997999043",
+            contabilidade: "5521997999043", 
+            pessoal: "5521997999043",
+            societario: "5521997999043"
+        };
+
+        let chatState = { step: "initial", userName: "", userEmail: "", userPhone: "", selectedDepartment: "" };
+
+        const resetChat = () => {
+            chatbotMessages.innerHTML = '';
+            chatState = { step: "initial", userName: "", userEmail: "", userPhone: "", selectedDepartment: "" };
+            setTimeout(() => handleChatResponse(), 500);
+        };
+
+        chatbotToggle.addEventListener('click', () => {
+            const isOpening = chatbot.style.display !== 'flex';
+            chatbot.style.display = 'flex';
+            if (isOpening) {
+                resetChat();
+                chatbotInput.focus();
+            }
+        });
+
+        chatbotClose.addEventListener('click', () => {
+            chatbot.style.display = 'none';
+        });
+        
+        const processUserMessage = () => {
+            const message = chatbotInput.value.trim();
+            if (message === '') return;
+            addMessage(message, 'user');
+            chatbotInput.value = '';
+            handleChatResponse(message);
+        };
+
+        chatbotSend.addEventListener('click', processUserMessage);
+        chatbotInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') processUserMessage();
+        });
+
+        const addMessage = (content, sender, isHtml = false) => {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', sender === 'user' ? 'user-message' : 'bot-message');
+            if (isHtml) {
+                messageDiv.innerHTML = content;
+            } else {
+                messageDiv.textContent = content;
+            }
+            chatbotMessages.appendChild(messageDiv);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        };
+
+        const addOptions = (options) => {
+            const optionsContainer = document.createElement('div');
+            optionsContainer.className = 'options-container';
+            options.forEach(option => {
+                const button = document.createElement('button');
+                button.className = 'option-button';
+                button.textContent = option.label;
+                button.onclick = () => {
+                    addMessage(option.label, 'user');
+                    handleChatResponse(option.value);
+                    optionsContainer.remove();
+                };
+                optionsContainer.appendChild(button);
+            });
+            chatbotMessages.appendChild(optionsContainer);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        };
+        
+        const showTypingIndicator = () => {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message bot-message typing-indicator';
+            typingDiv.innerHTML = '<span>.</span><span>.</span><span>.</span>';
+            chatbotMessages.appendChild(typingDiv);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+            return typingDiv;
+        };
+
+        // Função para salvar contato no Firebase
+        const saveContactToFirebase = (contactData) => {
+            return db.collection('contacts').add({
+                ...contactData,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                status: 'pending' // pending, contacted, resolved
+            });
+        };
+
+        const handleChatResponse = (userMessage = "") => {
+            const typingIndicator = showTypingIndicator();
+            chatbotInput.disabled = true;
+
+            setTimeout(() => {
+                typingIndicator.remove();
+                chatbotInput.disabled = false;
                 
-                case "getPhone":
-                    chatState.userPhone = userMessage;
-                    addMessage("Perfeito! Com qual setor você gostaria de falar?", 'bot');
-                    addOptions([
-                        { label: "Fiscal", value: "fiscal" },
-                        { label: "Contabilidade", value: "contabilidade" },
-                        { label: "Dep. Pessoal", value: "pessoal" },
-                        { label: "Societário", value: "societario" }
-                    ]);
-                    chatState.step = "selectDepartment";
-                    break;
-                
-                case "selectDepartment":
-                    if (departmentContacts[userMessage]) {
-                        chatState.selectedDepartment = userMessage;
-                        const finalMessage = generateFinalMessage();
-                        addMessage("Obrigado! Preparamos uma mensagem para você enviar diretamente para o setor responsável. Basta clicar no botão abaixo:", 'bot');
-                        
-                        const whatsappNumber = departmentContacts[chatState.selectedDepartment];
-                        const whatsappMessage = encodeURIComponent(finalMessage.replace(/<br>/g, '\n'));
-                        const whatsappLink = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
-                        
-                        addMessage(
-                            `${finalMessage}<a href="${whatsappLink}" target="_blank" class="whatsapp-button"><i class="fab fa-whatsapp"></i> Enviar para o Setor</a>`, 
-                            'bot', 
-                            true
-                        );
-                        chatState.step = "complete";
-                    } else {
-                        addMessage("Opção inválida. Por favor, escolha um dos setores abaixo.", 'bot');
+                switch(chatState.step) {
+                    case "initial":
+                        addMessage("Olá! Sou o assistente virtual da Padula Contabilidade. Para começarmos, qual é o seu nome?", 'bot');
+                        chatState.step = "getName";
+                        break;
+                    
+                    case "getName":
+                        chatState.userName = userMessage;
+                        addMessage(`Prazer, ${userMessage}! E qual é o seu melhor e-mail para contato?`, 'bot');
+                        chatState.step = "getEmail";
+                        break;
+                    
+                    case "getEmail":
+                        if (!/\S+@\S+\.\S+/.test(userMessage)) {
+                            addMessage("Por favor, insira um e-mail válido.", 'bot');
+                            return;
+                        }
+                        chatState.userEmail = userMessage;
+                        addMessage("Ótimo! Agora, por favor, informe seu telefone com DDD.", 'bot');
+                        chatState.step = "getPhone";
+                        break;
+                    
+                    case "getPhone":
+                        chatState.userPhone = userMessage;
+                        addMessage("Perfeito! Com qual setor você gostaria de falar?", 'bot');
                         addOptions([
                             { label: "Fiscal", value: "fiscal" },
                             { label: "Contabilidade", value: "contabilidade" },
                             { label: "Dep. Pessoal", value: "pessoal" },
                             { label: "Societário", value: "societario" }
                         ]);
-                    }
-                    break;
-                
-                case "complete":
-                    addMessage("Obrigado pelo contato! Se precisar de algo mais, é só chamar.", 'bot');
-                    break;
-            }
-            chatbotInput.focus();
-        }, 1000);
-    };
+                        chatState.step = "selectDepartment";
+                        break;
+                    
+                    case "selectDepartment":
+                        if (departmentContacts[userMessage]) {
+                            chatState.selectedDepartment = userMessage;
+                            
+                            // Salvar no Firebase
+                            saveContactToFirebase({
+                                name: chatState.userName,
+                                email: chatState.userEmail,
+                                phone: chatState.userPhone,
+                                department: chatState.selectedDepartment
+                            }).then(docRef => {
+                                console.log('Contato salvo com ID: ', docRef.id);
+                            }).catch(error => {
+                                console.error('Erro ao salvar contato: ', error);
+                            });
 
-    function generateFinalMessage() {
-        const departmentMap = {
-            "fiscal": "Fiscal",
-            "contabilidade": "Contabilidade",
-            "pessoal": "Departamento Pessoal",
-            "societario": "Societário"
+                            const finalMessage = generateFinalMessage();
+                            addMessage("Obrigado! Preparamos uma mensagem para você enviar diretamente para o setor responsável. Basta clicar no botão abaixo:", 'bot');
+                            
+                            const whatsappNumber = departmentContacts[chatState.selectedDepartment];
+                            const whatsappMessage = encodeURIComponent(finalMessage.replace(/<br>/g, '\n'));
+                            const whatsappLink = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
+                            
+                            addMessage(
+                                `${finalMessage}<a href="${whatsappLink}" target="_blank" class="whatsapp-button"><i class="fab fa-whatsapp"></i> Enviar para o Setor</a>`, 
+                                'bot', 
+                                true
+                            );
+                            chatState.step = "complete";
+                        } else {
+                            addMessage("Opção inválida. Por favor, escolha um dos setores abaixo.", 'bot');
+                            addOptions([
+                                { label: "Fiscal", value: "fiscal" },
+                                { label: "Contabilidade", value: "contabilidade" },
+                                { label: "Dep. Pessoal", value: "pessoal" },
+                                { label: "Societário", value: "societario" }
+                            ]);
+                        }
+                        break;
+                    
+                    case "complete":
+                        addMessage("Obrigado pelo contato! Se precisar de algo mais, é só chamar.", 'bot');
+                        break;
+                }
+                chatbotInput.focus();
+            }, 1000);
         };
-        return `Olá! Meu nome é *${chatState.userName}*.<br>Gostaria de falar com o setor *${departmentMap[chatState.selectedDepartment]}*.<br><br>Meus dados:<br>E-mail: ${chatState.userEmail}<br>Telefone: ${chatState.userPhone}`;
-    }
-});
+
+        function generateFinalMessage() {
+            const departmentMap = {
+                "fiscal": "Fiscal",
+                "contabilidade": "Contabilidade",
+                "pessoal": "Departamento Pessoal",
+                "societario": "Societário"
+            };
+            return `Olá! Meu nome é *${chatState.userName}*.<br>Gostaria de falar com o setor *${departmentMap[chatState.selectedDepartment]}*.<br><br>Meus dados:<br>E-mail: ${chatState.userEmail}<br>Telefone: ${chatState.userPhone}`;
+        }
+    });
 </script>
 </body>
 </html>
