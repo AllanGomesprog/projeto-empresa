@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Padula Contabilidade | Contabilidade Inteligente</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+</head>
+<style>
+    :root {
+        --primary-container: #3A5A99;
+        --on-primary-container: #FFFFFF;
+        --primary-fixed: #DDE2FF;
+        --on-primary-fixed: #213B70;
+        --surface: #F8F9FA;
+        --surface-container: #FFFFFF;
+        --on-surface: #1A202C;
+        --outline: #CBD5E0;
+        --text-muted: #64748B;
+
+        --font-family: 'Roboto', sans-serif;
+        --header-height: 80px;
+        --border-radius-large: 16px;
+        --border-radius-full: 999px;
+        --shadow-1: 0 1px 3px rgba(0,0,0,0.1);
+        --shadow-2: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html {
+        scroll-behavior: smooth;
+        scroll-padding-top: var(--header-height);
+    }
+
+ 
+    .container {
+        max-width: 1140px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+    }
+
+  body {
+    font-family: var(--font-family);
+    background-color: var(--surface);
+    color: var(--on-surface);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* CORREÇÃO: Adiciona espaço para o header fixo */
+main {
+    padding-top: var(--header-height);
+}
+
+.hero {
+    position: relative;
+    height: 100vh;
+    min-height: 600px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    color: var(--on-primary-container);
+    /* Compensa o padding do main */
+    margin-top: calc(-1 * var(--header-height));
+    height: calc(100vh + var(--header-height));
+}
+
+/* Header fixo */
+.header {
+    position: fixed;
+    top: 0; 
+    left: 0; 
+    width: 100%;
+    height: var(--header-height);
+    z-index: 1000;
+    background: white;
+    transition: box-shadow 0.4s ease;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+    .header .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 100%;
+    }
+
+    .header .logo img {
+        height: 60px; 
+        transition: all 0.3s ease;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    }
+
+    .header .logo img:hover {
+        transform: scale(1.05);
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+    }
+
+    .header nav {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    /* Botões base */
+    .btn {
+        position: relative;
+        overflow: hidden;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 8px 16px;
+        font-weight: 500;
+        font-size: 0.85rem;
+        border-radius: var(--border-radius-full);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: 1px solid transparent;
+        white-space: nowrap;
+        cursor: pointer;
+    }
+
+    .btn-filled {
+        background-color: var(--primary-container);
+        color: var(--on-primary-container);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .btn-filled:hover {
+        box-shadow: var(--shadow-2);
+        transform: translateY(-2px);
+        background-color: #2a4a88;
+    }
+
+    .btn-outlined {
+        background-color: transparent;
+        color: var(--primary-container);
+        border-color: var(--primary-container);
+    }
+    .btn-outlined:hover {
+        background-color: var(--primary-fixed);
+        transform: translateY(-2px);
+    }
+
+    .btn-tonal {
+        background-color: var(--primary-fixed);
+        color: var(--on-primary-fixed);
+        font-weight: 600;
+    }
+    .btn-tonal:hover {
+        box-shadow: var(--shadow-1);
+        transform: translateY(-2px);
+    }
+
+    .btn-large {
+        padding: 16px 36px;
+        font-size: 1rem;
+    }
+
+    .ripple {
+        position: absolute;
+        border-radius: 50%;
+        transform: scale(0);
+        animation: ripple-effect 0.6s linear;
+        background-color: rgba(255, 255, 255, 0.7);
+    }
+    @keyframes ripple-effect {
+        to { transform: scale(4); opacity: 0; }
+    }
+
+
+    .hero-slideshow {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        z-index: 1;
+    }
+    .slide {
+        position: absolute;
+        width: 100%; height: 100%;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+        background-size: cover;
+        background-position: center;
+    }
+    .slide.active { opacity: 1; }
+    .slide-1 { background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://i.postimg.cc/NfzYw2qz/imagem-fundo-section-3.png'); }
+    .slide-2 { background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://i.postimg.cc/02L3fYqP/imagem-fundo-section.png'); }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .hero h1 {
+        color: white;
+        font-size: 2.2rem;
+        line-height: 1.2;
+        margin-bottom: 1.5rem;
+        font-weight: 700;
+        letter-spacing: -1px;
+    }
+    .hero p {
+        color: white;
+        font-size: 1.1rem;
+        margin-bottom: 2.5rem;
+        max-width: 650px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* Seções */
+    .section { padding: 5rem 0; }
+    .section-title {
+        text-align: center;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 3rem;
+        color: var(--on-surface);
+        letter-spacing: -0.5px;
+    }
+
+    .services { background-color: var(--surface); }
+    .services-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    .service-card {
+        background-color: var(--surface-container);
+        padding: 2rem;
+        border-radius: var(--border-radius-large);
+        box-shadow: var(--shadow-1);
+        text-align: center;
+        border: 1px solid var(--outline);
+        transition: box-shadow 0.4s ease, transform 0.3s ease;
+    }
+    .service-card:hover {
+        box-shadow: var(--shadow-2);
+        transform: translateY(-5px);
+    }
+    .service-icon {
+        font-size: 1.8rem;
+        width: 60px;
+        height: 60px;
+        margin: 0 auto 1.5rem auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background-color: var(--primary-fixed);
+        color: var(--on-primary-fixed);
+    }
+    .service-card h3 { font-size: 1.3rem; margin-bottom: 0.75rem; }
+    .service-card p { color: var(--text-muted); font-size: 0.95rem; }
+
+    .tax-reform {
+        background-color: var(--surface-container);
+        text-align: center;
+        border-radius: var(--border-radius-large);
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 2.5rem 1.5rem;
+        border: 1px solid var(--outline);
+    }
+    .tax-reform h2 { font-size: 1.8rem; color: var(--on-surface); margin-bottom: 1rem; }
+    .tax-reform p {
+        color: var(--text-muted);
+        margin-bottom: 2rem;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .cta {
+        padding: 5rem 1.5rem;
+        background-color: var(--primary-container);
+        text-align: center;
+        margin-top: 5rem;
+    }
+    .cta-content { max-width: 700px; margin: 0 auto; }
+    .cta h2 { font-size: 2rem; margin-bottom: 1rem; color: white; }
+    .cta p { margin-bottom: 2rem; color: #e2e8f0; }
+
+    /* Footer */
+    .footer {
+        padding: 4rem 0 3rem 0;
+        background-color: var(--surface);
+    }
+    .footer .container, .footer-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+    }
+    .footer-logo img { height: 60px; opacity: 0.8; }
+    .footer-info p {
+        color: var(--text-muted);
+        margin: 0.1rem 0;
+        text-align: center;
+    }
+    .social-icons {
+        display: flex;
+        gap: 1.5rem;
+    }
+    .social-icons a {
+        color: var(--text-muted);
+        font-size: 1.5rem;
+        transition: color 0.4s ease, transform 0.3s ease;
+    }
+    .social-icons a:hover {
+        color: var(--primary-container);
+        transform: translateY(-3px);
+    }
+    .copyright {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        border-top: 1px solid var(--outline);
+        width: 100%;
+        padding-top: 2rem;
+        text-align: center;
+    }
+
+    /* Animações */
+    .fade-in { opacity:0; animation: fadeIn 1s ease-out forwards; }
+    .fade-in-delay-1 { opacity:0; animation: fadeIn 1s 0.2s ease-out forwards; }
+    .fade-in-delay-2 { opacity:0; animation: fadeIn 1s 0.4s ease-out forwards; }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-on-scroll {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .animate-on-scroll.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Botão Flutuante e Modal WhatsApp */
+    .floating-button-container {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 999;
+    }
+    .floating-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 55px;
+        height: 55px;
+        background-color: #25D366;
+        color: white;
+        border-radius: 50%;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        position: relative;
+        cursor: pointer;
+    }
+    .floating-button:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+        background-color: #20BA5A;
+    }
+    .floating-button i { font-size: 1.5rem; }
+    .floating-button-text { display: none; } /* Oculto em telas menores */
+
+    /* Modal WhatsApp */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(5px);
+    }
+    
+    .modal-overlay.active {
+        display: flex;
+    }
+
+    .whatsapp-modal {
+        background-color: white;
+        border-radius: 20px;
+        padding: 30px;
+        max-width: 400px;
+        width: 90%;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        animation: modalFadeIn 0.3s ease;
+    }
+    
+    @keyframes modalFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .modal-close {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--text-muted);
+        transition: color 0.3s;
+    }
+
+    .modal-close:hover {
+        color: var(--on-surface);
+    }
+
+    .whatsapp-icon {
+        font-size: 3rem;
+        color: #25D366;
+        margin-bottom: 15px;
+    }
+
+    .whatsapp-modal h3 {
+        font-size: 1.5rem;
+        color: var(--on-surface);
+        margin-bottom: 10px;
+    }
+
+    .whatsapp-modal p {
+        color: var(--text-muted);
+        margin-bottom: 25px;
+        font-size: 0.95rem;
+    }
+
+    .whatsapp-btn-modal {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background-color: #25D366;
+        color: white;
+        padding: 15px 30px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+    }
+
+    .whatsapp-btn-modal:hover {
+        background-color: #20BA5A;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4);
+    }
+
+    .whatsapp-btn-modal i {
+        font-size: 1.2rem;
+    }
+
+    /* MELHORIA: Abordagem Mobile-First para Responsividade */
+    /* Estilos para telas maiores (tablets) */
+    @media (min-width: 768px) {
+        .btn { padding: 10px 20px; font-size: 0.9rem; }
+        .hero h1 { font-size: 2.8rem; }
+        .hero p { font-size: 1.2rem; }
+        .section { padding: 7rem 0; }
+        .section-title { font-size: 2.5rem; margin-bottom: 4rem; }
+        .services-grid { grid-template-columns: repeat(2, 1fr); }
+        .tax-reform { padding: 4rem 2.5rem; }
+        .tax-reform h2 { font-size: 2.2rem; }
+        .cta { padding: 7rem 1.5rem; margin-top: 7rem; }
+        .cta h2 { font-size: 2.5rem; }
+        
+        .footer .container {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .footer-content { flex-direction: row; gap: 2rem; }
+        
+        .floating-button-container { bottom: 30px; right: 30px; }
+        .floating-button { width: 60px; height: 60px; }
+        .floating-button-text {
+            display: block; /* Mostra o texto em telas maiores */
+            position: absolute;
+            top: 50%;
+            right: calc(100% + 15px);
+            transform: translateY(-50%);
+            background-color: var(--primary-container);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        .floating-button:hover .floating-button-text {
+            opacity: 1;
+            visibility: visible;
+            right: calc(100% + 10px);
+        }
+
+        .whatsapp-modal {
+            width: 400px;
+        }
+    }
+
+    /* Estilos para telas ainda maiores (desktops) */
+    @media (min-width: 992px) {
+        .services-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    /* Botão Painel Admin - Versão Premium */
+.admin-link {
+    position: fixed;
+    top: 100px;
+    left: 20px;
+    z-index: 1001;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+}
+
+.admin-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.admin-link:hover::before {
+    left: 100%;
+}
+
+.admin-link:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.5);
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    color: white;
+    text-decoration: none;
+}
+
+.admin-link:active {
+    transform: translateY(-1px) scale(1.02);
+}
+
+.admin-link i {
+    font-size: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.admin-link:hover i {
+    transform: rotate(15deg);
+}
+
+/* Efeito de pulso sutil */
+@keyframes pulse-glow {
+    0% { box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4); }
+    50% { box-shadow: 0 6px 25px rgba(102, 126, 234, 0.6); }
+    100% { box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4); }
+}
+
+.admin-link {
+    animation: pulse-glow 3s infinite;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .admin-link {
+        top: 90px;
+        left: 15px;
+        padding: 10px 16px;
+        font-size: 0.8rem;
+        border-radius: 25px;
+    }
+}
+
+
+</style>
+<body>
+    <!-- Link para o painel administrativo (visível apenas para administradores) -->
+    <!-- Link para o painel administrativo -->
+<a href="admin.html" class="admin-link" id="adminLink" style="display: none;">
+    <i class="fas fa-cog"></i>
+    Painel Atendimento
+</a>
+
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img id="header-logo" src="https://i.postimg.cc/nhmmh4k2/logo-header.png" alt="Logotipo da Padula Contabilidade">
+            </a>
+            <nav>
+                <a href="https://onvio.com.br/clientcenter/company/66D3B09B1AEC4EC4BD49EC7B2B2F1B98" target="_blank" class="btn btn-outlined">Acesso do Cliente</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-slideshow">
+                <div class="slide slide-1 active"></div>
+                <div class="slide slide-2"></div>
+            </div>
+            
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="fade-in">Contabilidade inteligente para a nova economia.</h1>
+                    <p class="fade-in-delay-1" style="color: white;">Simplificamos a complexidade fiscal e financeira para que sua empresa possa inovar e crescer sem barreiras.</p>
+                    <a href="https://wa.me/5521997999043?text=Olá!%20Gostaria%20de%20agendar%20uma%20consultoria." target="_blank" class="btn btn-filled btn-large fade-in-delay-2">Agende uma Consultoria</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="servicos" class="services section">
+            <div class="container">
+                <h2 class="section-title">Nossas Soluções</h2>
+                <div class="services-grid">
+                    <div class="service-card animate-on-scroll">
+                        <div class="service-icon"><i class="fas fa-rocket"></i></div>
+                        <h3>Abertura de Empresa</h3>
+                        <p>Lançamos seu negócio com agilidade e segurança jurídica, cuidando de toda a burocracia inicial.</p>
+                    </div>
+                    <div class="service-card animate-on-scroll">
+                        <div class="service-icon"><i class="fas fa-calculator"></i></div>
+                        <h3>Gestão Fiscal e Tributária</h3>
+                        <p>Garantimos sua conformidade fiscal e otimizamos sua carga tributária com planejamento estratégico.</p>
+                    </div>
+                    <div class="service-card animate-on-scroll">
+                        <div class="service-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h3>BPO Financeiro</h3>
+                        <p>Assumimos sua rotina financeira para que você tenha clareza nos números e mais tempo para decidir.</p>
+                    </div>
+                    <div class="service-card animate-on-scroll">
+                        <div class="service-icon"><i class="fas fa-lightbulb"></i></div>
+                        <h3>Contabilidade Consultiva</h3>
+                        <p>Traduzimos dados contábeis em insights práticos para impulsionar suas decisões de negócio.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section">
+            <div class="container">
+                <div id="tax-reform" class="tax-reform animate-on-scroll">
+                    <h2>Navegue pela Reforma Tributária com Segurança</h2>
+                    <p>A maior mudança fiscal do Brasil exige preparação. Nossa equipe está pronta para guiar sua empresa por cada etapa, garantindo uma transição suave e sem surpresas.</p>
+                    <a href="reforma-tributaria.html" class="btn btn-tonal">Entenda o Impacto</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="contato" class="cta">
+            <div class="container">
+                <div class="cta-content animate-on-scroll">
+                    <h2>Vamos impulsionar seus resultados?</h2>
+                    <p>O primeiro passo para uma gestão financeira mais eficiente é uma conversa. Agende um diagnóstico gratuito e sem compromisso com nossos especialistas.</p>
+                    <a href="https://wa.me/5521997999043?text=Olá!%20Vim%20pelo%20site%20e%20quero%20saber%20mais." target="_blank" class="btn btn-filled btn-large">Falar com um especialista</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                     <img src="https://i.postimg.cc/nhmmh4k2/logo-header.png" alt="Logotipo da Padula Contabilidade no rodapé">
+                </div>
+                <div class="footer-info">
+                    <p>Contato: (21) 99799-9043</p>
+                    <p>E-mail: contabilidade@padulacontabilidade.com</p>
+                </div>
+            </div>
+            <div class="social-icons">
+                <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                <a href="https://www.instagram.com/padulacontabilidade" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            </div>
+            <p class="copyright">© 2025 Padula Contabilidade. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+    
+    <div vw class="enabled">
+      <div vw-access-button class="active"></div>
+      <div vw-plugin-wrapper>
+        <div class="vw-plugin-top-wrapper"></div>
+      </div>
+    </div>
+
+    <div class="floating-button-container">
+        <div class="floating-button" id="whatsapp-toggle">
+            <i class="fab fa-whatsapp"></i>
+            <span class="floating-button-text">Fale Conosco</span>
+        </div>
+    </div>
+
+    <!-- Modal WhatsApp -->
+    <div class="modal-overlay" id="whatsapp-modal">
+        <div class="whatsapp-modal">
+            <div class="modal-header">
+                <h3>Fale Conosco pelo WhatsApp</h3>
+                <button class="modal-close" id="modal-close">&times;</button>
+            </div>
+            <div class="whatsapp-icon">
+                <i class="fab fa-whatsapp"></i>
+            </div>
+            <p>Entre em contato conosco pelo WhatsApp. Nossa equipe está pronta para ajudar!</p>
+            <a href="https://wa.me/5521997999043?text=Olá!%20Vim%20pelo%20site%20e%20quero%20saber%20mais." target="_blank" class="whatsapp-btn-modal">
+                <i class="fab fa-whatsapp"></i>
+                Abrir WhatsApp
+            </a>
+        </div>
+    </div>
+
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+<script>
+  new window.VLibras.Widget('https://vlibras.gov.br/app');
+</script> 
+<script>
+    // =========================
+    // Configuração do Firebase
+    // =========================
+    // Substitua pela configuração do seu projeto Firebase
+   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyDlnpekdefRb6v7VWD1cieFHsx0dmDQu-k",
+  authDomain: "padula-contabilidade.firebaseapp.com",
+  databaseURL: "https://padula-contabilidade-default-rtdb.firebaseio.com",
+  projectId: "padula-contabilidade",
+  storageBucket: "padula-contabilidade.firebasestorage.app",
+  messagingSenderId: "840272874573",
+  appId: "1:840272874573:web:bcd5297c6e92dbd7526004",
+  measurementId: "G-NZ4WCXFRBZ"
+};
+
+    // Inicializar Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // Verificar se é administrador (simulação - em produção use autenticação adequada)
+    const isAdmin = localStorage.getItem('isAdmin') === 'true' || 
+                   window.location.search.includes('admin=true');
+    
+    if (isAdmin) {
+        document.getElementById('adminLink').style.display = 'block';
+        localStorage.setItem('isAdmin', 'true');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // =========================
+        // Slideshow
+        // =========================
+        const slides = document.querySelectorAll('.slide');
+        if (slides.length > 1) {
+            let currentSlide = 0;
+            const nextSlide = () => {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add('active');
+            };
+            setInterval(nextSlide, 5000);
+        }
+
+        // =========================
+        // Header scroll
+        // =========================
+        const header = document.querySelector('.header');
+        if (header) {
+            const handleScroll = () => {
+                header.classList.toggle('scrolled', window.scrollY > 50);
+            };
+            window.addEventListener('scroll', handleScroll, { passive: true });
+            handleScroll();
+        }
+
+        // =========================
+        // Animação ao rolar (IntersectionObserver)
+        // =========================
+        const animatedElements = document.querySelectorAll('.animate-on-scroll');
+        if ("IntersectionObserver" in window) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            animatedElements.forEach(element => observer.observe(element));
+        }
+
+        // =========================
+        // Efeito ripple nos botões
+        // =========================
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('click', function (e) {
+                const rect = this.getBoundingClientRect();
+                const ripple = document.createElement('span');
+                ripple.className = 'ripple';
+                ripple.style.left = `${e.clientX - rect.left}px`;
+                ripple.style.top = `${e.clientY - rect.top}px`;
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // =========================
+        // Funcionalidade do Modal WhatsApp
+        // =========================
+        const whatsappToggle = document.getElementById('whatsapp-toggle');
+        const whatsappModal = document.getElementById('whatsapp-modal');
+        const modalClose = document.getElementById('modal-close');
+
+        if (whatsappToggle && whatsappModal) {
+            whatsappToggle.addEventListener('click', () => {
+                whatsappModal.classList.add('active');
+            });
+
+            modalClose.addEventListener('click', () => {
+                whatsappModal.classList.remove('active');
+            });
+
+            // Fechar modal ao clicar no overlay
+            whatsappModal.addEventListener('click', (e) => {
+                if (e.target === whatsappModal) {
+                    whatsappModal.classList.remove('active');
+                }
+            });
+
+            // Fechar modal com ESC
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    whatsappModal.classList.remove('active');
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>
