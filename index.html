@@ -354,7 +354,7 @@ main {
         transform: translateY(0);
     }
 
-    /* Botão Flutuante e Chatbot (Estilos base para mobile) */
+    /* Botão Flutuante e Modal WhatsApp */
     .floating-button-container {
         position: fixed;
         bottom: 20px;
@@ -367,8 +367,8 @@ main {
         justify-content: center;
         width: 55px;
         height: 55px;
-        background-color: var(--primary-container);
-        color: var(--on-primary-container);
+        background-color: #25D366;
+        color: white;
         border-radius: 50%;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
         text-decoration: none;
@@ -379,125 +379,114 @@ main {
     .floating-button:hover {
         transform: translateY(-5px);
         box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-        background-color: #2a4a88;
+        background-color: #20BA5A;
     }
     .floating-button i { font-size: 1.5rem; }
     .floating-button-text { display: none; } /* Oculto em telas menores */
 
-    .chatbot-container {
+    /* Modal WhatsApp */
+    .modal-overlay {
         position: fixed;
-        bottom: 90px;
-        right: 5%;
-        width: 90%;
-        height: 70%;
-        background-color: white;
-        border-radius: 16px;
-        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
         z-index: 1000;
         display: none;
-        flex-direction: column;
-        overflow: hidden;
-        transition: all 0.3s ease;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(5px);
     }
-    .chatbot-header {
-        background-color: var(--primary-container);
-        color: white;
-        padding: 15px 20px;
+    
+    .modal-overlay.active {
+        display: flex;
+    }
+
+    .whatsapp-modal {
+        background-color: white;
+        border-radius: 20px;
+        padding: 30px;
+        max-width: 400px;
+        width: 90%;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        animation: modalFadeIn 0.3s ease;
+    }
+    
+    @keyframes modalFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .modal-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        margin-bottom: 20px;
     }
-    .chatbot-header h3 { margin: 0; font-size: 1.1rem; font-weight: 500; }
-    .chatbot-close { background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer; }
-    .chatbot-messages {
-        flex: 1;
-        padding: 15px;
-        overflow-y: auto;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        background-color: #f9f9f9;
-    }
-    .message {
-        max-width: 80%;
-        padding: 10px 15px;
-        border-radius: 18px;
-        font-size: 0.9rem;
-        line-height: 1.4;
-        word-wrap: break-word; /* Garante quebra de texto */
-    }
-    .bot-message {
-        background-color: #e6e6e6;
-        align-self: flex-start;
-        border-bottom-left-radius: 4px;
-    }
-    .user-message {
-        background-color: var(--primary-container);
-        color: white;
-        align-self: flex-end;
-        border-bottom-right-radius: 4px;
-    }
-    .chatbot-input {
-        padding: 15px;
-        border-top: 1px solid #e0e0e0;
-        display: flex;
-        gap: 10px;
-        background-color: white;
-    }
-    .chatbot-input input {
-        flex: 1;
-        padding: 10px 15px;
-        border: 1px solid #e0e0e0;
-        border-radius: 20px;
-        outline: none;
-        font-family: inherit;
-    }
-    .chatbot-input button {
-        background-color: var(--primary-container);
-        color: white;
+
+    .modal-close {
+        background: none;
         border: none;
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        display: flex;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--text-muted);
+        transition: color 0.3s;
+    }
+
+    .modal-close:hover {
+        color: var(--on-surface);
+    }
+
+    .whatsapp-icon {
+        font-size: 3rem;
+        color: #25D366;
+        margin-bottom: 15px;
+    }
+
+    .whatsapp-modal h3 {
+        font-size: 1.5rem;
+        color: var(--on-surface);
+        margin-bottom: 10px;
+    }
+
+    .whatsapp-modal p {
+        color: var(--text-muted);
+        margin-bottom: 25px;
+        font-size: 0.95rem;
+    }
+
+    .whatsapp-btn-modal {
+        display: inline-flex;
         align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-    .chatbot-input button:hover { background-color: #2a4a88; }
-    .options-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-    .option-button {
-        background-color: white;
-        border: 1px solid var(--primary-container);
-        color: var(--primary-container);
-        padding: 8px 12px;
-        border-radius: 16px;
-        font-size: 0.8rem;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-    .option-button:hover { background-color: var(--primary-container); color: white; }
-    .final-message {
-        background-color: #e6f7ff;
-        border: 1px solid #91d5ff;
-        padding: 15px;
-        border-radius: 8px;
-        margin-top: 10px;
-        font-size: 0.9rem;
-    }
-    .whatsapp-button {
-        display: inline-block;
+        gap: 10px;
         background-color: #25D366;
         color: white;
-        padding: 10px 15px;
-        border-radius: 20px;
+        padding: 15px 30px;
+        border-radius: 30px;
         text-decoration: none;
-        font-weight: 500;
-        margin-top: 15px;
-        transition: background-color 0.3s;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
     }
-    .whatsapp-button:hover { background-color: #128C7E; }
+
+    .whatsapp-btn-modal:hover {
+        background-color: #20BA5A;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4);
+    }
+
+    .whatsapp-btn-modal i {
+        font-size: 1.2rem;
+    }
 
     /* MELHORIA: Abordagem Mobile-First para Responsividade */
     /* Estilos para telas maiores (tablets) */
@@ -546,11 +535,8 @@ main {
             right: calc(100% + 10px);
         }
 
-        .chatbot-container {
-            width: 350px;
-            height: 500px;
-            bottom: 100px;
-            right: 30px;
+        .whatsapp-modal {
+            width: 400px;
         }
     }
 
@@ -753,21 +739,27 @@ main {
     </div>
 
     <div class="floating-button-container">
-        <div class="floating-button" id="chatbot-toggle">
-            <i class="fas fa-comments"></i>
+        <div class="floating-button" id="whatsapp-toggle">
+            <i class="fab fa-whatsapp"></i>
             <span class="floating-button-text">Fale Conosco</span>
         </div>
     </div>
-    <div class="chatbot-container" id="chatbot">
-        <div class="chatbot-header">
-            <h3>Atendimento Padula</h3>
-            <button class="chatbot-close" id="chatbot-close" aria-label="Fechar chat">&times;</button>
-        </div>
-        <div class="chatbot-messages" id="chatbot-messages">
+
+    <!-- Modal WhatsApp -->
+    <div class="modal-overlay" id="whatsapp-modal">
+        <div class="whatsapp-modal">
+            <div class="modal-header">
+                <h3>Fale Conosco pelo WhatsApp</h3>
+                <button class="modal-close" id="modal-close">&times;</button>
             </div>
-        <div class="chatbot-input">
-            <input type="text" id="chatbot-input" placeholder="Digite sua mensagem...">
-            <button id="chatbot-send" aria-label="Enviar mensagem"><i class="fas fa-paper-plane"></i></button>
+            <div class="whatsapp-icon">
+                <i class="fab fa-whatsapp"></i>
+            </div>
+            <p>Entre em contato conosco pelo WhatsApp. Nossa equipe está pronta para ajudar!</p>
+            <a href="https://wa.me/5521997999043?text=Olá!%20Vim%20pelo%20site%20e%20quero%20saber%20mais." target="_blank" class="whatsapp-btn-modal">
+                <i class="fab fa-whatsapp"></i>
+                Abrir WhatsApp
+            </a>
         </div>
     </div>
 
@@ -864,204 +856,34 @@ const firebaseConfig = {
         });
 
         // =========================
-        // Funcionalidade do Chatbot
+        // Funcionalidade do Modal WhatsApp
         // =========================
-        const chatbotToggle = document.getElementById('chatbot-toggle');
-        const chatbot = document.getElementById('chatbot');
-        const chatbotClose = document.getElementById('chatbot-close');
-        const chatbotMessages = document.getElementById('chatbot-messages');
-        const chatbotInput = document.getElementById('chatbot-input');
-        const chatbotSend = document.getElementById('chatbot-send');
+        const whatsappToggle = document.getElementById('whatsapp-toggle');
+        const whatsappModal = document.getElementById('whatsapp-modal');
+        const modalClose = document.getElementById('modal-close');
 
-        if (!chatbotToggle || !chatbot) return;
-
-        const departmentContacts = {
-            fiscal: "5521997999043",
-            contabilidade: "5521997999043", 
-            pessoal: "5521997999043",
-            societario: "5521997999043"
-        };
-
-        let chatState = { step: "initial", userName: "", userEmail: "", userPhone: "", selectedDepartment: "" };
-
-        const resetChat = () => {
-            chatbotMessages.innerHTML = '';
-            chatState = { step: "initial", userName: "", userEmail: "", userPhone: "", selectedDepartment: "" };
-            setTimeout(() => handleChatResponse(), 500);
-        };
-
-        chatbotToggle.addEventListener('click', () => {
-            const isOpening = chatbot.style.display !== 'flex';
-            chatbot.style.display = 'flex';
-            if (isOpening) {
-                resetChat();
-                chatbotInput.focus();
-            }
-        });
-
-        chatbotClose.addEventListener('click', () => {
-            chatbot.style.display = 'none';
-        });
-        
-        const processUserMessage = () => {
-            const message = chatbotInput.value.trim();
-            if (message === '') return;
-            addMessage(message, 'user');
-            chatbotInput.value = '';
-            handleChatResponse(message);
-        };
-
-        chatbotSend.addEventListener('click', processUserMessage);
-        chatbotInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') processUserMessage();
-        });
-
-        const addMessage = (content, sender, isHtml = false) => {
-            const messageDiv = document.createElement('div');
-            messageDiv.classList.add('message', sender === 'user' ? 'user-message' : 'bot-message');
-            if (isHtml) {
-                messageDiv.innerHTML = content;
-            } else {
-                messageDiv.textContent = content;
-            }
-            chatbotMessages.appendChild(messageDiv);
-            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-        };
-
-        const addOptions = (options) => {
-            const optionsContainer = document.createElement('div');
-            optionsContainer.className = 'options-container';
-            options.forEach(option => {
-                const button = document.createElement('button');
-                button.className = 'option-button';
-                button.textContent = option.label;
-                button.onclick = () => {
-                    addMessage(option.label, 'user');
-                    handleChatResponse(option.value);
-                    optionsContainer.remove();
-                };
-                optionsContainer.appendChild(button);
+        if (whatsappToggle && whatsappModal) {
+            whatsappToggle.addEventListener('click', () => {
+                whatsappModal.classList.add('active');
             });
-            chatbotMessages.appendChild(optionsContainer);
-            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-        };
-        
-        const showTypingIndicator = () => {
-            const typingDiv = document.createElement('div');
-            typingDiv.className = 'message bot-message typing-indicator';
-            typingDiv.innerHTML = '<span>.</span><span>.</span><span>.</span>';
-            chatbotMessages.appendChild(typingDiv);
-            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-            return typingDiv;
-        };
 
-        // Função para salvar contato no Firebase
-        const saveContactToFirebase = (contactData) => {
-            return db.collection('contacts').add({
-                ...contactData,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                status: 'pending' // pending, contacted, resolved
+            modalClose.addEventListener('click', () => {
+                whatsappModal.classList.remove('active');
             });
-        };
 
-        const handleChatResponse = (userMessage = "") => {
-            const typingIndicator = showTypingIndicator();
-            chatbotInput.disabled = true;
-
-            setTimeout(() => {
-                typingIndicator.remove();
-                chatbotInput.disabled = false;
-                
-                switch(chatState.step) {
-                    case "initial":
-                        addMessage("Olá! Sou o assistente virtual da Padula Contabilidade. Para começarmos, qual é o seu nome?", 'bot');
-                        chatState.step = "getName";
-                        break;
-                    
-                    case "getName":
-                        chatState.userName = userMessage;
-                        addMessage(`Prazer, ${userMessage}! E qual é o seu melhor e-mail para contato?`, 'bot');
-                        chatState.step = "getEmail";
-                        break;
-                    
-                    case "getEmail":
-                        if (!/\S+@\S+\.\S+/.test(userMessage)) {
-                            addMessage("Por favor, insira um e-mail válido.", 'bot');
-                            return;
-                        }
-                        chatState.userEmail = userMessage;
-                        addMessage("Ótimo! Agora, por favor, informe seu telefone com DDD.", 'bot');
-                        chatState.step = "getPhone";
-                        break;
-                    
-                    case "getPhone":
-                        chatState.userPhone = userMessage;
-                        addMessage("Perfeito! Com qual setor você gostaria de falar?", 'bot');
-                        addOptions([
-                            { label: "Fiscal", value: "fiscal" },
-                            { label: "Contabilidade", value: "contabilidade" },
-                            { label: "Dep. Pessoal", value: "pessoal" },
-                            { label: "Societário", value: "societario" }
-                        ]);
-                        chatState.step = "selectDepartment";
-                        break;
-                    
-                    case "selectDepartment":
-                        if (departmentContacts[userMessage]) {
-                            chatState.selectedDepartment = userMessage;
-                            
-                            // Salvar no Firebase
-                            saveContactToFirebase({
-                                name: chatState.userName,
-                                email: chatState.userEmail,
-                                phone: chatState.userPhone,
-                                department: chatState.selectedDepartment
-                            }).then(docRef => {
-                                console.log('Contato salvo com ID: ', docRef.id);
-                            }).catch(error => {
-                                console.error('Erro ao salvar contato: ', error);
-                            });
-
-                            const finalMessage = generateFinalMessage();
-                            addMessage("Obrigado! Preparamos uma mensagem para você enviar diretamente para o setor responsável. Basta clicar no botão abaixo:", 'bot');
-                            
-                            const whatsappNumber = departmentContacts[chatState.selectedDepartment];
-                            const whatsappMessage = encodeURIComponent(finalMessage.replace(/<br>/g, '\n'));
-                            const whatsappLink = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
-                            
-                            addMessage(
-                                `${finalMessage}<a href="${whatsappLink}" target="_blank" class="whatsapp-button"><i class="fab fa-whatsapp"></i> Enviar para o Setor</a>`, 
-                                'bot', 
-                                true
-                            );
-                            chatState.step = "complete";
-                        } else {
-                            addMessage("Opção inválida. Por favor, escolha um dos setores abaixo.", 'bot');
-                            addOptions([
-                                { label: "Fiscal", value: "fiscal" },
-                                { label: "Contabilidade", value: "contabilidade" },
-                                { label: "Dep. Pessoal", value: "pessoal" },
-                                { label: "Societário", value: "societario" }
-                            ]);
-                        }
-                        break;
-                    
-                    case "complete":
-                        addMessage("Obrigado pelo contato! Se precisar de algo mais, é só chamar.", 'bot');
-                        break;
+            // Fechar modal ao clicar no overlay
+            whatsappModal.addEventListener('click', (e) => {
+                if (e.target === whatsappModal) {
+                    whatsappModal.classList.remove('active');
                 }
-                chatbotInput.focus();
-            }, 1000);
-        };
+            });
 
-        function generateFinalMessage() {
-            const departmentMap = {
-                "fiscal": "Fiscal",
-                "contabilidade": "Contabilidade",
-                "pessoal": "Departamento Pessoal",
-                "societario": "Societário"
-            };
-            return `Olá! Meu nome é *${chatState.userName}*.<br>Gostaria de falar com o setor *${departmentMap[chatState.selectedDepartment]}*.<br><br>Meus dados:<br>E-mail: ${chatState.userEmail}<br>Telefone: ${chatState.userPhone}`;
+            // Fechar modal com ESC
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    whatsappModal.classList.remove('active');
+                }
+            });
         }
     });
 </script>
