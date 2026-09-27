@@ -95,15 +95,25 @@ main {
         height: 100%;
     }
 
+    .header .logo {
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        line-height: 1;
+    }
+
     .header .logo img {
-        height: 60px; 
+        height: 65px; 
+        width: auto;
+        display: block;
+        object-fit: contain;
         transition: all 0.3s ease;
-        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.08));
     }
 
     .header .logo img:hover {
-        transform: scale(1.05);
-        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+        transform: scale(1.04);
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.12));
     }
 
     .header nav {
@@ -639,7 +649,7 @@ main {
     <header class="header">
         <div class="container">
             <a href="index.html" class="logo">
-                <img id="header-logo" src="https://i.postimg.cc/nhmmh4k2/logo-header.png" alt="Logotipo da Padula Contabilidade">
+                <img id="header-logo" src="logo.png" alt="Logotipo da Padula Contabilidade">
             </a>
             <nav>
                 <a href="https://onvio.com.br/clientcenter/company/66D3B09B1AEC4EC4BD49EC7B2B2F1B98" target="_blank" class="btn btn-outlined">Acesso do Cliente</a>
@@ -716,7 +726,7 @@ main {
         <div class="container">
             <div class="footer-content">
                 <div class="footer-logo">
-                     <img src="https://i.postimg.cc/nhmmh4k2/logo-header.png" alt="Logotipo da Padula Contabilidade no rodapé">
+                     <img src="logo.png" alt="Logotipo da Padula Contabilidade no rodapé">
                 </div>
                 <div class="footer-info">
                     <p>Contato: (21) 99799-9043</p>
