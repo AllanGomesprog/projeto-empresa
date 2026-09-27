@@ -197,15 +197,19 @@ main {
     }
     .slide {
         position: absolute;
-        width: 100%; height: 100%;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
         opacity: 0;
         transition: opacity 1s ease-in-out;
         background-size: cover;
         background-position: center;
+        background-repeat: no-repeat;
     }
     .slide.active { opacity: 1; }
-    .slide-1 { background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://i.postimg.cc/NfzYw2qz/imagem-fundo-section-3.png'); }
-    .slide-2 { background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://i.postimg.cc/02L3fYqP/imagem-fundo-section.png'); }
+    .slide-1 { background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('imagem-fundo-1.png'); }
+    .slide-2 { background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('imagem-fundo-2.png'); }
 
     .hero-content {
         position: relative;
